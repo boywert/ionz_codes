@@ -44,7 +44,7 @@ zf.close;
 if len(z3list) != len(z2list):
     print "Error: z2 != z2"
 
-for i in range(len(z3)):
+for i in range(len(z3list)):
     z2 = z2list[i]
     z3 = z3list[i]
     denfile = densdir+"/"+z3+"n_all.dat"
