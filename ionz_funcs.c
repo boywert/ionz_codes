@@ -256,7 +256,7 @@ void reionization(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_rea
   smooth(nhs,Radii,N1,N2,N3);
   smooth(ngammas,Radii,N1,N2,N3);
  
-  for(jk=0;jk<Nnion;jk++) {
+  for(jk=0;jk<Nnion;jk++)
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
