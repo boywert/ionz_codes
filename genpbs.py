@@ -44,7 +44,7 @@ zf.close;
 if len(z3list) != len(z2list):
     print "Error: z2 != z2"
 
-print >> f "echo > log"
+print >> f, "echo > log"
 for i in range(len(z3list)):
     z2 = z2list[i].strip()
     z3 = z3list[i].strip()
