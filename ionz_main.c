@@ -98,9 +98,6 @@ int main(int argc, char **argv) {
       printf("Usage[2]: ./exec option nion_file omegam omegab omegalam hubble_h n_grid boxsize densityfile sourcefile curr_z prev_z outputfolder (very useful for submitting batch MPI tasks)\n");
       exit(1);
     }
-    sprintf(densfilename,"%s",input_param.densityfile);
-    sprintf(sourcefilename,"%s",input_param.sourcesfile);
-    sprintf(z_out,"%s",input_param.cur_z);
     if(mympi.ThisTask == 0) {
       printf("Start semi-numerical reionization process\n");
     }  
@@ -141,7 +138,9 @@ int main(int argc, char **argv) {
   vomegam = input_param.omegam;
   vomegalam = input_param.omegalam;
   vomegab = input_param.omegab;
-  
+  sprintf(densfilename,"%s",input_param.densityfile);
+  sprintf(sourcefilename,"%s",input_param.sourcesfile);
+  sprintf(z_out,"%s",input_param.cur_z);
   if(mympi.ThisTask == 0) {
     printf("Using Cosmological parameters:\t");
     printf("Omega_m:%f\t",vomegam);
