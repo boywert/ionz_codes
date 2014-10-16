@@ -138,9 +138,11 @@ int main(int argc, char **argv) {
   vomegam = input_param.omegam;
   vomegalam = input_param.omegalam;
   vomegab = input_param.omegab;
+
   sprintf(densfilename,"%s",input_param.densityfile);
   sprintf(sourcefilename,"%s",input_param.sourcesfile);
   sprintf(z_out,"%s",input_param.cur_z);
+
   if(mympi.ThisTask == 0) {
     printf("Using Cosmological parameters:\t");
     printf("Omega_m:%f\t",vomegam);
@@ -213,8 +215,9 @@ int main(int argc, char **argv) {
 #endif
   }
   t_stop = Get_Current_time();
-  /* Sanity MPI check */
+
 #ifdef PARALLEL
+  /* Sanity MPI check */
   if(mympi.ThisTask == 1)
     printf("N1=%d N2=%d N3=%d\n",N1,N2,N3);
 #endif
@@ -238,10 +241,7 @@ int main(int argc, char **argv) {
 	JobsTask[ii] = ii*mympi.NTask+mympi.ThisTask;
     }
   }
-  // The max smoothing radius here is set as half of the diagonal of the box
-  // This can be changed, one can choose a redshift dependent function instead
-  // Or one can choose a model for redshift evolution of the mean free path of the UV photons
-  // We are showing the most simple case here
+
 
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);
@@ -324,7 +324,6 @@ int main(int argc, char **argv) {
 #endif // CHUNKTRANSFER
 #endif // PARALLEL  
   if(mympi.ThisTask == 0) {
-    unpack_4d_array_mpi_transfer(buffer_final,nxion,Nnion,N1,N2,N3);
     for(jk=0;jk<Nnion;jk++) {
       t_start = Get_Current_time();
       //calculating avg. ionization frction
@@ -334,47 +333,35 @@ int main(int argc, char **argv) {
       // This is based on the value of nion assigned to it
       sprintf(file2,"%s%s_%4.2f",PREFIX,z_out,nion[jk]);
       printf("Saving %s\n",file2);
+      ii=0; jj=0; kk=0;
+      start_ll = jk*N1*N2*N3;
+      for(ll=start_ll; ll<(jk+1)*N1*N2*N3; ll++) {
+#ifdef PARALLEL
+	xh1 = 1.-buffer_final[ll];
+	xh1 = max(xh1,0.0);
+	buffer[ll] = xh1;
+#else
+	xh1 = 1.-buffer[ll];
+	xh1 = max(xh1,0.0);
+	buffer[ll] = xh1;
+#endif
+	vion[jk] += xh1;
+	roion[jk] += xh1*nh[ii][jj][kk];
+	ii = (ll-start_ll) % N1;
+	jj = ((ll-start_ll)/N1) % N2;
+	kk = ((ll-start_ll)/(N1*N2)) % N3;
+      }
+      inp=fopen(file2,"wb+");
       // Writing the x_HI map in binary
       // In the begining 3 integers are written which defines the size
       // of the x_HI array
-      /* ii=0; jj=0; kk=0; */
-      /* start_ll = jk*N1*N2*N3; */
-      /* for(ll=start_ll; ll<(jk+1)*N1*N2*N3; ll++) { */
-/* #ifdef PARALLEL */
-/* 	xh1 = 1.-buffer_final[ll]; */
-/* 	xh1 = max(xh1,0.0); */
-/* 	buffer_final[ll] = xh1; */
-/* #else  */
-/* 	xh1 = 1.-buffer[ll]; */
-/* 	xh1 = max(xh1,0.0); */
-/* 	buffer[ll] = xh1; */
-/* #endif	 */
-/* 	vion[jk] += xh1; */
-/* 	roion[jk] += xh1*nh[ii][jj][kk]; */
-/* 	ii = (ll-start_ll) % N1; */
-/* 	jj = ((ll-start_ll)/N1) % N2; */
-/* 	kk = ((ll-start_ll)/(N1*N2)) % N3; */
-/*       } */
-      vion[jk]=0.0;
-      roion[jk]=0.0;
-      for(ii=0;ii<N1;ii++)
-	for(jj=0;jj<N2;jj++)
-	  for(kk=0;kk<N3;kk++) {
-	    xh1 = 1.-nxion[jk][ii][jj][kk];
-	    xh1 = max(0.,xh1);
-	    vion[jk] += xh1; 
-	    roion[jk] += xh1*nh[ii][jj][kk];
-	  }
-      inp=fopen(file2,"wb+");
       fwrite(&N1,sizeof(int),1,inp);
       fwrite(&N2,sizeof(int),1,inp);
       fwrite(&N3,sizeof(int),1,inp);
       
-#ifdef PARALLEL
-      fwrite(&buffer_final[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);
-#else
+
       fwrite(&buffer[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);	
-#endif	    
+ 
       fclose(inp);
       roion[jk]/=robar*(N1*N2*N3); // mass avg xHI
       vion[jk]/=(1.*N1*N2*N3); // volume avg xHI
