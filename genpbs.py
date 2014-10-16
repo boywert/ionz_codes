@@ -15,7 +15,7 @@ print >> f, 'module add gcc/4.8.1'
 print >> f, 'module add intel-mpi/64/4.1.1/036'
 print >> f, 'module add gsl/gcc/1.15' 
 
-print >> f, 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/c/cs/cs390/local/fftw-2.1.5/install/lib' >> $pbsfile
+print >> f, 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/c/cs/cs390/local/fftw-2.1.5/install/lib' 
 
 #parameters
 execfile = "./ionz_main"
