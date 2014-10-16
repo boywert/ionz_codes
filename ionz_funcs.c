@@ -237,9 +237,6 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
 void reionization(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****nxion_p, float *nion_p, int Nnion, int N1, int N2, int N3) {
   fftw_real ***nhs,***ngammas;
   int ii,jj,kk,jk;
-  
-  hi_bar = 0.0;
-  gamma_bar = 0.0;
 
   nhs=allocate_fftw_real_3d(N1,N2,N3+2);
   ngammas=allocate_fftw_real_3d(N1,N2,N3+2);
