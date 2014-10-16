@@ -115,14 +115,13 @@ void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nx
     roion[jk]=0.0;
 
 
-    for(kk=0;kk<N3;kk++)
+    for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
-	for(ii=0;ii<N1;ii++) {
+	for(kk=0;kk<N3;kk++) {
 	  if(nh[ii][jj][kk]>nion[jk]*ngamma[ii][jj][kk]) 
 	    nxion[jk][ii][jj][kk]=nion[jk]*ngamma[ii][jj][kk]/nh[ii][jj][kk];
 	  else 
-	    nxion[jk][ii][jj][kk]=1.0;
-   
+	    nxion[jk][ii][jj][kk]=1.0; 
 	  vion[jk] += nxion[jk][ii][jj][kk];
 	  roion[jk] += nxion[jk][ii][jj][kk]*nh[ii][jj][kk];	  
 	}
