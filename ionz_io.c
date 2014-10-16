@@ -67,7 +67,7 @@ void pack_4d_array_mpi_transfer(fftw_real ****input, float *output, int Nnion, i
     for(kk=0;kk<N3;kk++)
       for(jj=0;jj<N2;jj++)
 	for(ii=0;ii<N1;ii++) {
-	  output[jk*N1*N2*N3 + ii*N1*N2 + jj*N1 + ii] = input[jk][ii][jj][kk];
+	  output[jk*N1*N2*N3 + kk*N1*N2 + jj*N1 + ii] = input[jk][ii][jj][kk];
 	}
 }
 /** 
