@@ -28,7 +28,7 @@ boxsize = 47.0
 
 densdir="/research/prace/sph_smooth_cubepm_130315_6_1728_47Mpc_ext2/nc306/"
 srcdir="/mnt/lustre/scratch/cs390/47Mpc/outputs/okamoto/sources/"
-outputdir = ""
+outputdir = "./"
 zlistfile="/mnt/lustre/scratch/cs390/47Mpc/snap_z3.txt"
 z2listfile="/mnt/lustre/scratch/cs390/47Mpc/snap_z.txt"
 
