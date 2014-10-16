@@ -45,12 +45,12 @@ if len(z3list) != len(z2list):
     print "Error: z2 != z2"
 
 for i in range(len(z3list)):
-    z2 = z2list[i]
-    z3 = z3list[i]
+    z2 = z2list[i].strip()
+    z3 = z3list[i].strip()
     if i == 0:
-        prev_z = -1
+        prev_z = "-1"
     else:
-        prev_z = z3list[i-1]
+        prev_z = z3list[i-1].strip()
     denfile = densdir+"/"+z3+"n_all.dat"
     srcfile = srcdir+"/"+z2+".dat"
     print >> f, "echo 'z = "+z3+"'"
