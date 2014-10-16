@@ -265,8 +265,9 @@ int main(int argc, char **argv) {
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
   t_start = Get_Current_time();
-  for(ii=0;ii<NjobsperTask[mympi.ThisTask];ii++) 
-    reionization(Radii_list[JobsTask[ii]], nh, ngamma, nxion, nion, Nnion, N1, N2, N3 );    
+  // for(ii=0;ii<NjobsperTask[mympi.ThisTask];ii++) 
+  //  reionization(Radii_list[JobsTask[ii]], nh, ngamma, nxion, nion, Nnion, N1, N2, N3 );    
+  reionization(Radii_list[n_radii-1], nh, ngamma, nxion, nion, Nnion, N1, N2, N3 );    
   
   free_fftw_real_3d(ngamma,N1,N2,N3+2);
   if(use_prev_xfrac == 1) {
