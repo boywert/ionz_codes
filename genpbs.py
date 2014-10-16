@@ -23,6 +23,7 @@ nion_list = "nion.list"
 omegam = 0.27
 omegab = 0.044
 omegal = 0.73
+hubble_h = 0.7
 ngrid = 306
 boxsize = 47.0
 
@@ -55,7 +56,7 @@ for i in range(len(z3list)):
     denfile = densdir+"/"+z3+"n_all.dat"
     srcfile = srcdir+"/"+z2+".dat"
     print >> f, "echo 'z = "+z3+"'"
-    print >> f, 'mpirun -np $NSLOTS',execfile,nion_list,omegam,omegab,omegal,ngrid,boxsize,denfile,srcfile,z3,prev_z,outputdir,">> log"
+    print >> f, 'mpirun -np $NSLOTS',execfile,nion_list,omegam,omegab,omegal,hubble_h,ngrid,boxsize,denfile,srcfile,z3,prev_z,outputdir,">> log"
 
 #./ionz_main nion.list 0.27 0.044 0.73 0.7 306 47.0 /research/prace/sph_smooth_cubepm_130315_6_1728_47Mpc_ext2/nc306/6.000n_all.dat /mnt/lustre/scratch/cs390/47Mpc/outputs/okamoto/sources/6.00.dat 6.000 6.056 outputfolder
 f.close
