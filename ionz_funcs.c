@@ -274,7 +274,7 @@ void reionization(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_rea
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  //Checking the ionization condition
-	  printf("%d %d %d %d %f\n",jk,ii,jj,kk,nion_p[jk]*ngammas[ii][jj][kk]);
+	  printf("%d %d %d %d %f\n",jk,ii,jj,kk,nion_p[jk]*ngammas[ii][jj][kk]/nhs[ii][jj][kk]);
 	  if(nhs[ii][jj][kk]<nion_p[jk]*ngammas[ii][jj][kk]) {
 	    nxion_p[jk][ii][jj][kk]=1.;
 	  }
