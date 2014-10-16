@@ -142,7 +142,7 @@ int main(int argc, char **argv) {
   sprintf(densfilename,"%s",input_param.densityfile);
   sprintf(sourcefilename,"%s",input_param.sourcesfile);
   sprintf(z_out,"%s",input_param.cur_z);
-  sprintf(outputdir,"%s",input_param.outputdir)
+  sprintf(outputdir,"%s",input_param.outputdir);
   if(mympi.ThisTask == 0) {
     printf("Using Cosmological parameters:\t");
     printf("Omega_m:%f\t",vomegam);
