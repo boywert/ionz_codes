@@ -28,7 +28,7 @@ boxsize = 47.0
 
 densdir="/research/prace/sph_smooth_cubepm_130315_6_1728_47Mpc_ext2/nc306/"
 srcdir="/mnt/lustre/scratch/cs390/47Mpc/outputs/okamoto/sources/"
-
+outputdir = ""
 zlistfile="/mnt/lustre/scratch/cs390/47Mpc/snap_z3.txt"
 z2listfile="/mnt/lustre/scratch/cs390/47Mpc/snap_z.txt"
 
@@ -47,10 +47,14 @@ if len(z3list) != len(z2list):
 for i in range(len(z3list)):
     z2 = z2list[i]
     z3 = z3list[i]
+    if i == 0:
+        prev_z = -1
+    else:
+        prev_z = z3list[i-1]
     denfile = densdir+"/"+z3+"n_all.dat"
     srcfile = srcdir+"/"+z2+".dat"
-    print >> f, "z = "+z3
-    print >> f, 'mpirun -np $NSLOTS '+" "
+    print >> f, "echo 'z = "+z3+"'"
+    print >> f, 'mpirun -np $NSLOTS',omegam,omegab,omegal,ngrid,boxsize,denfile,srcfile,z3,prev_z,outputdir
 
 #./ionz_main nion.list 0.27 0.044 0.73 0.7 306 47.0 /research/prace/sph_smooth_cubepm_130315_6_1728_47Mpc_ext2/nc306/6.000n_all.dat /mnt/lustre/scratch/cs390/47Mpc/outputs/okamoto/sources/6.00.dat 6.000 6.056 outputfolder
 f.close
