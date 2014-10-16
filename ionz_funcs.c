@@ -237,36 +237,21 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
 void reionization(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****nxion_p, float *nion_p, int Nnion, int N1, int N2, int N3) {
   fftw_real ***nhs,***ngammas;
   int ii,jj,kk,jk;
-  double hi_bar,gamma_bar;
-  float min_nion;
-
+  
   hi_bar = 0.0;
   gamma_bar = 0.0;
+
   nhs=allocate_fftw_real_3d(N1,N2,N3+2);
   ngammas=allocate_fftw_real_3d(N1,N2,N3+2);
+
   for(ii=0;ii<N1;ii++)
     for(jj=0;jj<N2;jj++)
       for(kk=0;kk<N3;kk++) {
 	//Filling smoothing arrays with the dark matter and source density data
 	nhs[ii][jj][kk]=nh_p[ii][jj][kk];
 	ngammas[ii][jj][kk]=ngamma_p[ii][jj][kk];
-	hi_bar += nhs[ii][jj][kk];
-	gamma_bar += ngammas[ii][jj][kk];
       }
-  hi_bar /= 1.*N1*N2*N3;
-  gamma_bar /= 1.*N1*N2*N3;
-  min_nion = 1.0e20;
 
-  for(jk=0;jk<Nnion;jk++) {
-    min_nion = min(nion_p[jk],min_nion);
-  }
-  if(hi_bar < min_nion*gamma_bar) {
-    for(ii=0;ii<N1;ii++)
-      for(jj=0;jj<N2;jj++)
-	for(kk=0;kk<N3;kk++)
-	  nxion_p[jk][ii][jj][kk]=1.;
-    return;
-  }
   // printf("starting smoothing for radius of size %e (in units of grid size)\n",Radii);
   
   //Smoothing with real space spherical filter
@@ -275,23 +260,13 @@ void reionization(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_rea
   smooth(ngammas,Radii,N1,N2,N3);
  
   for(jk=0;jk<Nnion;jk++) {
-    if(hi_bar < nion_p[jk]*gamma_bar) {
-      for(ii=0;ii<N1;ii++)
-	for(jj=0;jj<N2;jj++)
-	  for(kk=0;kk<N3;kk++) {
-	      nxion_p[jk][ii][jj][kk]=1.;
-	  }
-    }
-    else {
-      for(ii=0;ii<N1;ii++)
-	for(jj=0;jj<N2;jj++)
-	  for(kk=0;kk<N3;kk++) {
-	    if(nhs[ii][jj][kk]<nion_p[jk]*ngammas[ii][jj][kk]) {
-	      nxion_p[jk][ii][jj][kk]=1.;
-	    }
-	  }
-    }
-  }
+    for(ii=0;ii<N1;ii++)
+      for(jj=0;jj<N2;jj++)
+	for(kk=0;kk<N3;kk++) {
+	  if(nhs[ii][jj][kk]<nion_p[jk]*ngammas[ii][jj][kk])
+	    nxion_p[jk][ii][jj][kk]=1.;
+	}
+
   free_fftw_real_3d(nhs,N1,N2,N3+2);
   free_fftw_real_3d(ngammas,N1,N2,N3+2);
 }
