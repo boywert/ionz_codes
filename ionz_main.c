@@ -142,7 +142,7 @@ int main(int argc, char **argv) {
   sprintf(densfilename,"%s",input_param.densityfile);
   sprintf(sourcefilename,"%s",input_param.sourcesfile);
   sprintf(z_out,"%s",input_param.cur_z);
-
+  sprintf(outputdir,"%s",input_param.outputdir)
   if(mympi.ThisTask == 0) {
     printf("Using Cosmological parameters:\t");
     printf("Omega_m:%f\t",vomegam);
@@ -332,7 +332,7 @@ int main(int argc, char **argv) {
       roion[jk]=0.0;
       // Defining the ionization map output file name
       // This is based on the value of nion assigned to it
-      sprintf(file2,"%s%s_%4.2f",PREFIX,z_out,nion[jk]);
+      sprintf(file2,"%s/%s%s_%4.2f",outputdir,PREFIX,z_out,nion[jk]);
       printf("Saving %s\n",file2);
       ii=0; jj=0; kk=0;
       start_ll = jk*N1*N2*N3;
