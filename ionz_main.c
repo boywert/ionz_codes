@@ -335,9 +335,9 @@ int main(int argc, char **argv) {
 #endif // PARALLEL  
   if(mympi.ThisTask == 0) {
 #ifdef PARALLEL
-    write_xfrac(outputfolder, z_out, buffer_final, nh, nion, Nnion, N1, N2, N3);
+    write_xfrac(outputdir, z_out, buffer_final, nh, nion, Nnion, N1, N2, N3);
 #else
-    write_xfrac(outputfolder, z_out, buffer, nh, nion, Nnion, N1, N2, N3);
+    write_xfrac(outputdir, z_out, buffer, nh, nion, Nnion, N1, N2, N3);
 #endif
   }
   MPI_Finalize();
