@@ -133,6 +133,58 @@ void read_density(char *filename, float *buffer_3d, double *robar_p, int N1, int
   }
   *robar_p /= (1.*(n1)*(n2)*(n3));
 }
+void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, float *nion, int Nnion, int N1, int N2, int N3) {
+  FILE *inp;
+  float xh1;
+  int ii,jj,kk,jk,ll,start_ll;
+  double t_start, t_stop;
+  double vion[Nnion],roion[Nnion];
+  char filename[2000];
+  
+  for(jk=0;jk<Nnion;jk++) {
+      t_start = Get_Current_time();
+    
+      vion[jk]=0.0;
+      roion[jk]=0.0;
+
+      // Defining the ionization map output file name
+      // This is based on the value of nion assigned to it
+      sprintf(filename,"%s/%s%s_%4.2f",dirname,PREFIX,z_out,nion[jk]);
+      printf("Saving %s\n",filename);
+      ii=0; jj=0; kk=0;
+      start_ll = jk*N1*N2*N3;
+      for(ll=start_ll; ll<(jk+1)*N1*N2*N3; ll++) {
+
+	xh1 = 1.-buffer_4d[ll];
+	xh1 = max(xh1,0.0);
+	buffer_4d[ll] = xh1;
+
+	vion[jk] += xh1;
+	roion[jk] += xh1*nh[ii][jj][kk];
+	ii = (ll-start_ll) % N1;
+	jj = ((ll-start_ll)/N1) % N2;
+	kk = ((ll-start_ll)/(N1*N2)) % N3;
+      }
+      
+      inp=fopen(filename,"wb+");
+      // Writing the x_HI map in binary
+      // In the begining 3 integers are written which defines the size
+      // of the x_HI array
+      fwrite(&N1,sizeof(int),1,inp);
+      fwrite(&N2,sizeof(int),1,inp);
+      fwrite(&N3,sizeof(int),1,inp);
+      
+
+      fwrite(&buffer_4d[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);	
+ 
+      fclose(inp);
+      roion[jk]/=robar*(N1*N2*N3); // mass avg xHI
+      vion[jk]/=(1.*N1*N2*N3); // volume avg xHI
+      // roion[jk]/=(float)robar; // divide by H density to get mass avg. xHI
+      t_stop = Get_Current_time();
+      printf("nion = %f obtained vol. avg. x_HI=%e mass avg. x_HI=%e : %lf s\n",nion[jk],vion[jk],roion[jk],t_stop-t_start);
+    }
+}
 
 /** 
  * 
@@ -146,27 +198,33 @@ void read_density(char *filename, float *buffer_3d, double *robar_p, int N1, int
  * @param N2 2nd dimension grid (input)
  * @param N3 3rd dimension grid (input)
  */
-void read_xfrac(char *dirname, float *buffer_4d, float *nion_list, int Nnion, int N1, int N2, int N3) {
+void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion_list, int Nnion, int N1, int N2, int N3) {
   FILE *inp;
   int n1,n2,n3;
   char filename[2048];
-  sprintf(filename,"%s",dirname);
-  if((inp=fopen(filename,"rb")) == NULL) {
+  int jk;
+  
+  for(jk=0;jk<Nnion;jk++) {
+    sprintf(filename,"%s/%s%s_%4.2f",dirname,PREFIX,z,nion[jk]);
+    // printf("Reading %s\n",filename);
+    if((inp=fopen(filename,"rb")) == NULL) {
       debug_checkpoint();
       printf("Cannot open %s\nTerminate...\n",filename);
       exit(1);
     }
-  fread(&n1,sizeof(int),1,inp);
-  fread(&n2,sizeof(int),1,inp);
-  fread(&n3,sizeof(int),1,inp);
-  if(n1 != N1 || n2 != N2 || n3 != N3) {
-    printf("Grid dimensions in %s are not the same as in config file\n",filename);
-    printf("Xfrac file: %d:%d:%d   Config file: %d:%d:%d\n",n1,n2,n3,N1,N2,N3);
-    printf("Terminate\n");
-    exit(1);
+     
+    fread(&n1,sizeof(int),1,inp);
+    fread(&n2,sizeof(int),1,inp);
+    fread(&n3,sizeof(int),1,inp);
+    if(n1 != N1 || n2 != N2 || n3 != N3) {
+      printf("Grid dimensions in %s are not the same as in config file\n",filename);
+      printf("Xfrac file: %d:%d:%d   Config file: %d:%d:%d\n",n1,n2,n3,N1,N2,N3);
+      printf("Terminate\n");
+      exit(1);
+    }
+    fread(&buffer_4d[jk*N1*N2*N3],sizeof(float),n1*n2*n3,inp);
+    fclose(inp);
   }
-  fread(buffer_4d,sizeof(float),n1*n2*n3,inp);
-  fclose(inp);
 }
 
 
