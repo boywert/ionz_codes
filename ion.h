@@ -107,7 +107,7 @@ extern void unpack_4d_array_mpi_transfer(float *input, fftw_real ****output, int
 extern void read_density(char *filename, float *buffer_3d, double *robar_p, int N1, int N2, int N3, float vomegam, float vomegab);
 extern void read_sources(char *filename, float *buffer_3d, double *robarhalo_p, int N1, int N2, int N3);
 extern void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion_list, int Nnion, int N1, int N2, int N3);
-extern void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, float *nion, int Nnion, int N1, int N2, int N3);
+extern void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, float robar, float *nion, int Nnion, int N1, int N2, int N3);
 
 /* in allotarrays.c */
 extern fftw_real  ***allocate_fftw_real_3d(int N1,int N2,int N3);

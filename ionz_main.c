@@ -213,7 +213,7 @@ int main(int argc, char **argv) {
   if(use_prev_xfrac == 1) {
     buffer = malloc(sizeof(float)*Nnion*N1*N2*N3);
     if(mympi.ThisTask == 0)
-      read_xfrac(outputdir, z_prev, buffer, nion, Nnion, N1, N2, N3);
+      read_xfrac(outputdir, z_prev, buffer, robar,nion, Nnion, N1, N2, N3);
 #ifdef PARALLEL
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(buffer, Nnion*N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);    

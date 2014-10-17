@@ -133,7 +133,7 @@ void read_density(char *filename, float *buffer_3d, double *robar_p, int N1, int
   }
   *robar_p /= (1.*(n1)*(n2)*(n3));
 }
-void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, float *nion, int Nnion, int N1, int N2, int N3) {
+void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, float robar, float *nion, int Nnion, int N1, int N2, int N3) {
   FILE *inp;
   float xh1;
   int ii,jj,kk,jk,ll,start_ll;
@@ -198,7 +198,7 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
  * @param N2 2nd dimension grid (input)
  * @param N3 3rd dimension grid (input)
  */
-void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion_list, int Nnion, int N1, int N2, int N3) {
+void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion, int Nnion, int N1, int N2, int N3) {
   FILE *inp;
   int n1,n2,n3;
   char filename[2048];
