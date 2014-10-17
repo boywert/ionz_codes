@@ -207,9 +207,19 @@ int main(int argc, char **argv) {
 #endif
   if(mympi.ThisTask == 0) 
     printf("roHIbar = %lf, roUV = %lf\n",robar,robarhalo);
+
+
+  /* Read xfrac from previous snapshot */
   if(use_prev_xfrac == 1) {
+    buffer = malloc(sizeof(float)*Nnion*N1*N2*N3);
     if(mympi.ThisTask == 0)
-      read_xfrac(outputdir, buffer, nion, Nnion, N1, N2, N3);
+      read_xfrac(outputfolder, z_prev, buffer, nion, Nnion, N1, N2, N3);
+#ifdef PARALLEL
+    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Bcast(buffer, Nnion*N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);    
+#endif
+    unpack_4d_array_mpi_transfer(buffer, xfrac, Nnion, N1, N2, N3);
+
 #ifdef PARALLEL
     MPI_Barrier(MPI_COMM_WORLD);
 #endif
@@ -324,51 +334,11 @@ int main(int argc, char **argv) {
 #endif // CHUNKTRANSFER
 #endif // PARALLEL  
   if(mympi.ThisTask == 0) {
-    for(jk=0;jk<Nnion;jk++) {
-      t_start = Get_Current_time();
-      //calculating avg. ionization frction
-      vion[jk]=0.0;
-      roion[jk]=0.0;
-      // Defining the ionization map output file name
-      // This is based on the value of nion assigned to it
-      sprintf(file2,"%s/%s%s_%4.2f",outputdir,PREFIX,z_out,nion[jk]);
-      printf("Saving %s\n",file2);
-      ii=0; jj=0; kk=0;
-      start_ll = jk*N1*N2*N3;
-      for(ll=start_ll; ll<(jk+1)*N1*N2*N3; ll++) {
 #ifdef PARALLEL
-	xh1 = 1.-buffer_final[ll];
-	xh1 = max(xh1,0.0);
-	buffer[ll] = xh1;
+    write_xfrac(outputfolder, z_out, buffer_final, nh, nion, Nnion, N1, N2, N3);
 #else
-	xh1 = 1.-buffer[ll];
-	xh1 = max(xh1,0.0);
-	buffer[ll] = xh1;
+    write_xfrac(outputfolder, z_out, buffer, nh, nion, Nnion, N1, N2, N3);
 #endif
-	vion[jk] += xh1;
-	roion[jk] += xh1*nh[ii][jj][kk];
-	ii = (ll-start_ll) % N1;
-	jj = ((ll-start_ll)/N1) % N2;
-	kk = ((ll-start_ll)/(N1*N2)) % N3;
-      }
-      inp=fopen(file2,"wb+");
-      // Writing the x_HI map in binary
-      // In the begining 3 integers are written which defines the size
-      // of the x_HI array
-      fwrite(&N1,sizeof(int),1,inp);
-      fwrite(&N2,sizeof(int),1,inp);
-      fwrite(&N3,sizeof(int),1,inp);
-      
-
-      fwrite(&buffer[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);	
- 
-      fclose(inp);
-      roion[jk]/=robar*(N1*N2*N3); // mass avg xHI
-      vion[jk]/=(1.*N1*N2*N3); // volume avg xHI
-      // roion[jk]/=(float)robar; // divide by H density to get mass avg. xHI
-      t_stop = Get_Current_time();
-      printf("nion = %f obtained vol. avg. x_HI=%e mass avg. x_HI=%e : %lf s\n",nion[jk],vion[jk],roion[jk],t_stop-t_start);
-    }
   }
   MPI_Finalize();
   return 0;

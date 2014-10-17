@@ -122,11 +122,11 @@ void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nx
 	    nxion[jk][ii][jj][kk]=nion[jk]*ngamma[ii][jj][kk]/nh[ii][jj][kk];
 	  else 
 	    nxion[jk][ii][jj][kk]=1.0; 
-	  vion[jk] += nxion[jk][ii][jj][kk];
-	  roion[jk] += nxion[jk][ii][jj][kk]*nh[ii][jj][kk];	  
+	  // vion[jk] += nxion[jk][ii][jj][kk];
+	  // roion[jk] += nxion[jk][ii][jj][kk]*nh[ii][jj][kk];	  
 	}
-    vion[jk]/=(1.*N1*N2*N3);
-    roion[jk]/=(float)(robar*N1*N2*N3);
+    // vion[jk]/=(1.*N1*N2*N3);
+    // roion[jk]/=(float)(robar*N1*N2*N3);
   }
 }
 
@@ -163,12 +163,11 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
 	    nxion_p[jk][ii][jj][kk]=nion_p[jk]*ngamma_p[ii][jj][kk]/nh;
 	  else 
 	    nxion_p[jk][ii][jj][kk]=1.0;
-	  
-	  vion[jk] += nxion_p[jk][ii][jj][kk];
-	  roion[jk] += nxion_p[jk][ii][jj][kk]*nh_p[ii][jj][kk];	  
+	  // vion[jk] += nxion_p[jk][ii][jj][kk];
+	  // roion[jk] += nxion_p[jk][ii][jj][kk]*nh_p[ii][jj][kk];	  
 	}
-    vion[jk]/=(1.*N1*N2*N3);
-    roion[jk]/=(float)(robar*N1*N2*N3);
+    // vion[jk]/=(1.*N1*N2*N3);
+    // roion[jk]/=(float)(robar*N1*N2*N3);
   }
 }
 
