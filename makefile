@@ -14,7 +14,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/c/cs/cs390/local/fftw-2.1.5/instal
 
 all: ionz_main
 
-arrayoperations.mod: arrayoperations.f90
+arrayoperations.o: arrayoperations.f90
 	$(FC) -c arrayoperations.f90
 
 read_param.o: read_param.c
@@ -34,8 +34,8 @@ ionz_funcs.o:	ionz_funcs.c
 	$(CC) -c $(CFLAGS) $(INCLUDE) $(LINKLIB) ionz_funcs.c $(POSTFLAGS) 
 
 
-ionz_main: ionz_main.o ionz_misc.o ionz_io.o ionz_funcs.o read_param.o
-	$(CC) $(CFLAGS) $(INCLUDE) $(LINKLIB) -o ionz_main ionz_main.o ionz_io.o ionz_misc.o ionz_funcs.o read_param.o $(POSTFLAGS) 
+ionz_main: ionz_main.o ionz_misc.o ionz_io.o ionz_funcs.o read_param.o arrayoperations.o
+	$(CC) $(CFLAGS) $(INCLUDE) $(LINKLIB) -o ionz_main ionz_main.o ionz_io.o ionz_misc.o ionz_funcs.o read_param.o arrayoperations.o $(POSTFLAGS) 
 
 clean:
 	rm -rf *.o
