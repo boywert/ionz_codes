@@ -177,9 +177,9 @@ int main(int argc, char **argv) {
   MPI_Bcast(&robar, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 #ifdef CHUNKTRANSFER
   chunk_float_mpi_bcast(buffer,N1*N2*N3,mpi_buffer,0);
-#else // ~CHUNKTRANSFER
+#else 
   MPI_Bcast(buffer, N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
-#endif // CHUNKTRANSFER
+#endif 
   MPI_Barrier(MPI_COMM_WORLD);
 #endif // PARALLEL
   
@@ -195,8 +195,12 @@ int main(int argc, char **argv) {
 
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);
-  MPI_Bcast(buffer, N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&robarhalo, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+#ifdef CHUNKTRANSFER
+  chunk_float_mpi_bcast(buffer,N1*N2*N3,mpi_buffer,0);
+#else 
+  MPI_Bcast(buffer, N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
+#endif 
 #endif
   unpack_3d_array_mpi_transfer(buffer,ngamma,N1,N2,N3);
   free(buffer);
@@ -215,10 +219,13 @@ int main(int argc, char **argv) {
       read_xfrac(outputdir, z_prev, buffer, nion, Nnion, N1, N2, N3);
 #ifdef PARALLEL
     MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Bcast(buffer, Nnion*N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);    
+#ifdef CHUNKTRANSFER
+    chunk_float_mpi_bcast(buffer,N1*N2*N3,mpi_buffer,0);
+#else 
+    MPI_Bcast(buffer, Nnion*N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
+#endif 
 #endif
     unpack_4d_array_mpi_transfer(buffer, xfrac, Nnion, N1, N2, N3);
-
 #ifdef PARALLEL
     MPI_Barrier(MPI_COMM_WORLD);
 #endif
