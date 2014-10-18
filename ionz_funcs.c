@@ -130,6 +130,7 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
   double nh;
   double t_start,t_stop;
   int len = N1*N2*N3;
+  printf("start xfrac\n");
   t_start = Get_Current_time();
   for(jk=0;jk<Nnion;jk++) {
     
