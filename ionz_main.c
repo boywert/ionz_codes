@@ -221,7 +221,7 @@ int main(int argc, char **argv) {
 #ifdef PARALLEL
     MPI_Barrier(MPI_COMM_WORLD);
 #ifdef CHUNKTRANSFER
-    chunk_float_mpi_bcast(buffer,Nion*N1*N2*N3,mpi_buffer,0);
+    chunk_float_mpi_bcast(buffer,Nnion*N1*N2*N3,mpi_buffer,0);
 #else 
     MPI_Bcast(buffer, Nnion*N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
 #endif 
