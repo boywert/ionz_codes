@@ -99,7 +99,9 @@ void smooth(fftw_real ***ro_dum,float Radii,int N1,int N2, int N3) {
 void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nxion, double robar, float *nion, int Nnion, int N1, int N2, int N3) {
   int ii,jj,kk,jk;
   double vion[Nnion],roion[Nnion];
+  int len=N1*N2*N3;
   for(jk=0;jk<Nnion;jk++) {
+#ifndef USE_FORTRAN_SPEEDUP_ARRAY
     //calculating avg. ionization frction
     vion[jk]=0.0;
     roion[jk]=0.0;
@@ -108,6 +110,9 @@ void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nx
 	for(kk=0;kk<N3;kk++) {
 	    nxion[jk][ii][jj][kk]=min(nion[jk]*ngamma[ii][jj][kk]/nh[ii][jj][kk],1.0);
 	}
+#else
+    fortran_subgrid_reionization(&nh_p[0][0][0],&ngamma_p[0][0][0],&nxion_p[jk][0][0][0],&nion_p[jk],&len);    
+#endif
   }
 }
 
