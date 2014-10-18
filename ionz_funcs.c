@@ -144,7 +144,7 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
   if(mympi.ThisTask == 0) printf("C : %lf\n",t_stop-t_start);
   t_start = Get_Current_time();
   for(jk=0;jk<Nnion;jk++) {
-    fortran_subgrid_reionization_with_xfrac(&nh[0][0][0],&ngamma[0][0][0],&xfrac[jk][0][0][0],&nion[jk],&len));
+    fortran_subgrid_reionization_with_xfrac(&nh[0][0][0],&ngamma[0][0][0],&xfrac[jk][0][0][0],&nion[jk],&len);
   }
   t_stop = Get_Current_time();
   if(mympi.ThisTask == 0) printf("F : %lf\n",t_stop-t_start);
