@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
   MPI_Barrier(MPI_COMM_WORLD);
   MPI_Bcast(&robar, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 #ifdef CHUNKTRANSFER
-  chunk_float_mpi_bcast(buffer,N1*N2*N3,0);
+  chunk_float_mpi_bcast(buffer,N1*N2*N3,mpi_buffer,0);
 #else // ~CHUNKTRANSFER
   MPI_Bcast(buffer, N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
 #endif // CHUNKTRANSFER

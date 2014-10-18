@@ -12,7 +12,7 @@
 
 
 
-void chunk_float_mpi_bcast(float *buffer, int len, int root) {
+void chunk_float_mpi_bcast(float *buffer, int len, int mpi_buffer,int root) {
   int ii, cur_len;
   ii = 0;
   while(ii*mpi_buffer < len) {
