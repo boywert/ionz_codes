@@ -96,19 +96,18 @@ void smooth(fftw_real ***ro_dum,float Radii,int N1,int N2, int N3) {
 }
 
 
-void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nxion, double robar, float *nion, int Nnion, int N1, int N2, int N3) {
+void subgrid_reionization(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****nxion_p, double robar, float *nion_p, int Nnion, int N1, int N2, int N3) {
+#ifndef USE_FORTRAN_SPEEDUP_ARRAY
   int ii,jj,kk,jk;
-  double vion[Nnion],roion[Nnion];
+#endif
   int len=N1*N2*N3;
   for(jk=0;jk<Nnion;jk++) {
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
     //calculating avg. ionization frction
-    vion[jk]=0.0;
-    roion[jk]=0.0;
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
-	    nxion[jk][ii][jj][kk]=min(nion[jk]*ngamma[ii][jj][kk]/nh[ii][jj][kk],1.0);
+	    nxion_p[jk][ii][jj][kk]=min(nion_p[jk]*ngamma_p[ii][jj][kk]/nh_p[ii][jj][kk],1.0);
 	}
 #else
     fortran_subgrid_reionization(&nh_p[0][0][0],&ngamma_p[0][0][0],&nxion_p[jk][0][0][0],&nion_p[jk],&len);    
@@ -179,6 +178,7 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
   ngammas=allocate_fftw_real_3d(N1,N2,N3+2);
 
   for(jk=0;jk<Nnion;++jk) {
+#ifdef 
     //Filling smoothing arrays with the dark matter and source density data
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
@@ -194,7 +194,6 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  //Checking the ionization condition
-
 	  if(nhs[ii][jj][kk]<nion_p[jk]*ngammas[ii][jj][kk]) {
 	    nxion_p[jk][ii][jj][kk]=1.;
 	  }
