@@ -99,7 +99,6 @@ void smooth(fftw_real ***ro_dum,float Radii,int N1,int N2, int N3) {
 void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nxion, double robar, float *nion, int Nnion, int N1, int N2, int N3) {
   int ii,jj,kk,jk;
   double vion[Nnion],roion[Nnion];
-  
   for(jk=0;jk<Nnion;jk++) {
     //calculating avg. ionization frction
     vion[jk]=0.0;
@@ -128,24 +127,27 @@ void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nx
  */
 void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****xfrac_p, fftw_real ****nxion_p, double robar, float *nion_p, int Nnion, int N1, int N2, int N3) {
   int ii,jj,kk,jk;
-  double vion[Nnion],roion[Nnion];
   double nh;
+  double t_start,t_stop;
+  int len = N1*N2*N3;
+  t_start = Get_Current_time();
   for(jk=0;jk<Nnion;jk++) {
-  
-    //calculating avg. ionization frction
-    vion[jk]=0.0;
-    roion[jk]=0.0;
-
-
+    
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  nh = nh_p[ii][jj][kk]*(1.-xfrac_p[jk][ii][jj][kk]);
 	  nxion_p[jk][ii][jj][kk]=min(1.0,nion_p[jk]*ngamma_p[ii][jj][kk]/nh);	  
 	}
-    // vion[jk]/=(1.*N1*N2*N3);
-    // roion[jk]/=(float)(robar*N1*N2*N3);
   }
+  t_stop = Get_Current_time();
+  if(mympi.ThisTask == 0) printf("C : %lf\n",t_stop-t_start);
+  t_start = Get_Current_time();
+  for(jk=0;jk<Nnion;jk++) {
+    fortran_subgrid_reionization_with_xfrac(&(nh[0][0][0]),&(ngamma[0][0][0],xfrac[jk][0][0][0],&nion[jk],&len));
+  }
+  t_stop = Get_Current_time();
+  if(mympi.ThisTask == 0) printf("F : %lf\n",t_stop-t_start);
 }
 
 
