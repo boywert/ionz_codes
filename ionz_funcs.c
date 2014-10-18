@@ -19,16 +19,7 @@
  * @param N3 3rd dimension grid
  */
 void Setting_Up_Memory_For_ionz(int Nnion, int N1, int N2, int N3) {
-  //  int jk;
 
-  /* nh = allocate_fftw_real_3d(N1,N2,N3+2); */
-  /* ngamma =allocate_fftw_real_3d(N1,N2,N3+2); */
-  /* nxion=(fftw_real****)malloc(sizeof(fftw_real***)*Nnion); */
-  /* for(jk=0;jk<Nnion;++jk) { */
-  /*   nxion[jk]=allocate_fftw_real_3d(N1,N2,N3+2); */
-  /* } */
-  // allocate area for storing densities  DONE
-  /* The last dimension gets padded because of using REAL FFT */
 }
 
 /** 
@@ -113,20 +104,11 @@ void subgrid_reionization(fftw_real ***nh, fftw_real ***ngamma, fftw_real ****nx
     //calculating avg. ionization frction
     vion[jk]=0.0;
     roion[jk]=0.0;
-
-
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
-	  if(nh[ii][jj][kk]>nion[jk]*ngamma[ii][jj][kk]) 
-	    nxion[jk][ii][jj][kk]=nion[jk]*ngamma[ii][jj][kk]/nh[ii][jj][kk];
-	  else 
-	    nxion[jk][ii][jj][kk]=1.0; 
-	  // vion[jk] += nxion[jk][ii][jj][kk];
-	  // roion[jk] += nxion[jk][ii][jj][kk]*nh[ii][jj][kk];	  
+	    nxion[jk][ii][jj][kk]=min(nion[jk]*ngamma[ii][jj][kk]/nh[ii][jj][kk],1.0);
 	}
-    // vion[jk]/=(1.*N1*N2*N3);
-    // roion[jk]/=(float)(robar*N1*N2*N3);
   }
 }
 
@@ -159,12 +141,7 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  nh = nh_p[ii][jj][kk]*(1.-xfrac_p[jk][ii][jj][kk]);
-	  if(nh >nion_p[jk]*ngamma_p[ii][jj][kk]) 
-	    nxion_p[jk][ii][jj][kk]=nion_p[jk]*ngamma_p[ii][jj][kk]/nh;
-	  else 
-	    nxion_p[jk][ii][jj][kk]=1.0;
-	  // vion[jk] += nxion_p[jk][ii][jj][kk];
-	  // roion[jk] += nxion_p[jk][ii][jj][kk]*nh_p[ii][jj][kk];	  
+	  nxion_p[jk][ii][jj][kk]=min(1.0,nion_p[jk]*ngamma_p[ii][jj][kk]/nh);	  
 	}
     // vion[jk]/=(1.*N1*N2*N3);
     // roion[jk]/=(float)(robar*N1*N2*N3);
