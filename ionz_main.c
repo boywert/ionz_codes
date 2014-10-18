@@ -267,8 +267,10 @@ int main(int argc, char **argv) {
   // Do subgrid seminumerical simulation
   if(mympi.ThisTask == 0)
     printf("Start subgrid semi-numerical reionization\n");
-  subgrid_reionization(nh, ngamma, nxion, robar, nion, Nnion, N1, N2, N3 );  
-
+  if(use_prev_xfrac == 1)
+    subgrid_reionization_with_xfrac(nh, ngamma, xfrac, nxion, robar, nion, Nnion, N1, N2, N3 );  
+  else
+    subgrid_reionization(nh, ngamma, nxion, robar, nion, Nnion, N1, N2, N3 ); 
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
