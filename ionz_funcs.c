@@ -178,8 +178,7 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
   nhs=allocate_fftw_real_3d(N1,N2,N3+2);
   ngammas=allocate_fftw_real_3d(N1,N2,N3+2);
 
-  for(jk=0;jk<Nnion;++jk) {
-#ifdef 
+  for(jk=0;jk<Nnion;++jk) { 
     //Filling smoothing arrays with the dark matter and source density data
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
