@@ -124,6 +124,13 @@ extern void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***
 /// Global arrays
 
 
+/* Fortrans */
+#ifdef __cplusplus
+extern "C" {
+#endif
+  void __arrayoperations_MOD_fortran_subgrid_reionization_with_xfrac(fftw_real *nh,fftw_real *ngamma, fftw_real *xfrac,fftw_real *nxion,int *nion,int *len) 
+#ifdef __cplusplus
+#endif
 #define ION_H_
 #endif
 
