@@ -98,8 +98,9 @@ void smooth(fftw_real ***ro_dum,float Radii,int N1,int N2, int N3) {
 
 void subgrid_reionization(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****nxion_p, double robar, float *nion_p, int Nnion, int N1, int N2, int N3) {
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
-  int ii,jj,kk,jk;
+  int ii,jj,kk;
 #endif
+  int jk;
   int len=N1*N2*N3;
   for(jk=0;jk<Nnion;jk++) {
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
