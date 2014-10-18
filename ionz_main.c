@@ -270,7 +270,8 @@ int main(int argc, char **argv) {
   if(use_prev_xfrac == 1)
     subgrid_reionization_with_xfrac(nh, ngamma, xfrac, nxion, robar, nion, Nnion, N1, N2, N3 );  
   else
-    subgrid_reionization(nh, ngamma, nxion, robar, nion, Nnion, N1, N2, N3 ); 
+    subgrid_reionization(nh, ngamma, nxion, robar, nion, Nnion, N1, N2, N3 );
+ 
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
