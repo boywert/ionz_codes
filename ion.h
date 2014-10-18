@@ -128,7 +128,7 @@ extern void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***
 #ifdef __cplusplus
 extern "C" {
 #endif
-  extern void fortran_subgrid_reionization_with_xfrac(fftw_real *nh,fftw_real *ngamma, fftw_real *xfrac,fftw_real *nxion,int *nion,int *len);
+  extern void fortran_subgrid_reionization_with_xfrac(fftw_real *nh,fftw_real *ngamma, fftw_real *xfrac,fftw_real *nxion,float *nion,int *len);
 #ifdef __cplusplus
 #endif
 #define ION_H_
