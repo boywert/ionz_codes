@@ -12,6 +12,17 @@
 
 
 
+void chunk_float_mpi_bcast(float *buffer, int len, int root) {
+  int ii, cur_len;
+  ii = 0;
+  while(ii*mpi_buffer < len) {
+    cur_len = min(mpi_buffer, len-ii*mpi_buffer);
+    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Bcast(&buffer[ii*mpi_buffer], cur_len, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    ii++;
+  }   
+}
+
 /** 
  * Free 3D fftw_real arrays
  * 

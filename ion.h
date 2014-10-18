@@ -113,7 +113,7 @@ extern void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real 
 extern fftw_real  ***allocate_fftw_real_3d(int N1,int N2,int N3);
 extern void free_fftw_real_3d(fftw_real ***f, int N1, int N2, int N3);
 extern void bcast_input_params();
-
+extern void chunk_float_mpi_bcast(float *buffer, int len, int root);
 /* in ionz_funcs.c */
 extern void Setting_Up_Memory_For_ionz(int Nnion, int N1, int N2, int N3);
 extern void smooth(fftw_real ***ro_dum,float Radii,int N1,int N2, int N3);

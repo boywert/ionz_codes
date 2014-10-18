@@ -174,19 +174,18 @@ int main(int argc, char **argv) {
 
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);
-  MPI_Bcast(buffer, N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&robar, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+#ifdef CHUNKTRANSFER
+  chunk_float_mpi_bcast(buffer,N1*N2*N3,0);
+#else // ~CHUNKTRANSFER
+  MPI_Bcast(buffer, N1*N2*N3, MPI_FLOAT, 0, MPI_COMM_WORLD);
+#endif // CHUNKTRANSFER
   MPI_Barrier(MPI_COMM_WORLD);
-
-#endif
-#ifdef PARALLEL
-  MPI_Barrier(MPI_COMM_WORLD);
-#endif 
-
-
+#endif // PARALLEL
+  
   unpack_3d_array_mpi_transfer(buffer,nh,N1,N2,N3);
-
-
+  
+  
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
