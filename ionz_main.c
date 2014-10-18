@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
   char outputdir[2000];
 
 
-  int use_prev_xfrac = 0;
+  int use_prev_xfrac = 1;
 
 
 #ifdef PARALLEL

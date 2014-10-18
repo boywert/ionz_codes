@@ -202,8 +202,14 @@ void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion, int Nnion
   FILE *inp;
   int n1,n2,n3;
   char filename[2048];
-  int jk;
-  
+  int i,jk;
+  float zval;
+  sscanf(z,"%f",&zval);
+  if(zval < 0.0) {
+    for(i=0;i<Nnion*N1*N2*N3;i++)
+      buffer_4d[i] = 0.0;
+    return;
+  }
   for(jk=0;jk<Nnion;jk++) {
     sprintf(filename,"%s/%s%s_%4.2f",dirname,PREFIX,z,nion[jk]);
     // printf("Reading %s\n",filename);
