@@ -208,7 +208,7 @@ void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion, int Nnion
   sscanf(z,"%f",&zval);
   if(zval < 0.0) {
     for(i=0;i<Nnion*N1*N2*N3;i++)
-      buffer_4d[i] = 0.0;
+      buffer_4d[i] = 1.0;
     return;
   }
   for(jk=0;jk<Nnion;jk++) {
