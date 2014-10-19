@@ -140,16 +140,16 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
   double t_start, t_stop;
   double vion[Nnion],roion[Nnion];
   char filename[2000];
-  
+  char buff[2000];
   for(jk=0;jk<Nnion;jk++) {
       t_start = Get_Current_time();
     
       vion[jk]=0.0;
       roion[jk]=0.0;
-
       // Defining the ionization map output file name
       // This is based on the value of nion assigned to it
-      sprintf(filename,"%s/%s%s_%4.2f",dirname,PREFIX,z_out,nion[jk]);
+      sprintf(buff,"mkdir -p %s/%4.2f",dirname,nion[jk]);
+      sprintf(filename,XFRACFILEPATTERN,dirname,nion[jk],PREFIX,z_out);
       printf("Saving %s\n",filename);
       ii=0; jj=0; kk=0;
       start_ll = jk*N1*N2*N3;
@@ -211,7 +211,7 @@ void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion, int Nnion
     return;
   }
   for(jk=0;jk<Nnion;jk++) {
-    sprintf(filename,"%s/%s%s_%4.2f",dirname,PREFIX,z,nion[jk]);
+    sprintf(filename,XFRACFILEPATTERN,dirname,nion[jk],PREFIX,z_out);
     // printf("Reading %s\n",filename);
     if((inp=fopen(filename,"rb")) == NULL) {
       debug_checkpoint();

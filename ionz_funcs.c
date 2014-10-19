@@ -194,6 +194,7 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
     //Smoothing with real space spherical filter
     smooth(nhs,Radii,N1,N2,N3);
     smooth(ngammas,Radii,N1,N2,N3); 
+
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
