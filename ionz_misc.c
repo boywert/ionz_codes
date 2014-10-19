@@ -32,7 +32,7 @@ void chunk_float_mpi_bcast(float *buffer, int len, int mpi_buffer,int root) {
  * @param N3 3rd dimension len
  */
 void free_fftw_real_3d(fftw_real ***f, int N1, int N2, int N3) {
-  int ii,jj;
+  int ii;
   free(&f[0][0][0]);
   for(ii=0;ii<N1;ii++) 
     free(f[ii]);
