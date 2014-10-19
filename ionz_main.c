@@ -18,13 +18,12 @@ struct_const constvars = {3.14159265359,1024,0.1,2.0};
  * @return 
  */
 int main(int argc, char **argv) {
-  FILE  *inp;
-  int ii, jj, kk,jk,ll,start_ll;
+  int ii, jj;
   float r_min,r_max;
   char file2[300];
   int Nnion,N1,N2,N3;
-  float *nion,xh1; 
-  double robar,robarhalo,*vion,*roion;;
+  float *nion; 
+  double robar,robarhalo;
   float *Radii_list;
   int n_radii;
   int *NjobsperTask;
