@@ -133,15 +133,13 @@ void subgrid_reionization(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real **
 void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****xfrac_p, fftw_real ****nxion_p, double robar, float *nion_p, int Nnion, int N1, int N2, int N3) {
 #if USE_FORTRAN_SPEEDUP_ARRAY
   int ii,jj,kk;
+  double nh;
+#else
+  int len = N1*N2*(N3+2);
 #endif
   int jk;
-  double nh;
-  double t_start,t_stop;
-  int len = N1*N2*(N3+2);
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
-  t_start = Get_Current_time();
-  for(jk=0;jk<Nnion;jk++) {
-    
+  for(jk=0;jk<Nnion;jk++) {    
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
@@ -149,13 +147,10 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
 	  nxion_p[jk][ii][jj][kk]=min(1.0,nion_p[jk]*ngamma_p[ii][jj][kk]/nh);	  
 	}
   }
-  t_stop = Get_Current_time();
 #else
-  t_start = Get_Current_time();
   for(jk=0;jk<Nnion;jk++) {
     fortran_subgrid_reionization_with_xfrac(&nh_p[0][0][0],&ngamma_p[0][0][0],&xfrac_p[jk][0][0][0],&nxion_p[jk][0][0][0],&nion_p[jk],&len);
   }
-  t_stop = Get_Current_time();
 #endif
 }
 
