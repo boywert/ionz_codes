@@ -174,10 +174,7 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
       fwrite(&N1,sizeof(int),1,inp);
       fwrite(&N2,sizeof(int),1,inp);
       fwrite(&N3,sizeof(int),1,inp);
-      
-
-      fwrite(&buffer_4d[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);	
- 
+      fwrite(&buffer_4d[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);	 
       fclose(inp);
       roion[jk]/=robar*(N1*N2*N3); // mass avg xHI
       vion[jk]/=(1.*N1*N2*N3); // volume avg xHI
