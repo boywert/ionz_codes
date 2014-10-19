@@ -211,7 +211,7 @@ void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion, int Nnion
     return;
   }
   for(jk=0;jk<Nnion;jk++) {
-    sprintf(filename,XFRACFILEPATTERN,dirname,nion[jk],PREFIX,z_out);
+    sprintf(filename,XFRACFILEPATTERN,dirname,nion[jk],PREFIX,z);
     // printf("Reading %s\n",filename);
     if((inp=fopen(filename,"rb")) == NULL) {
       debug_checkpoint();
