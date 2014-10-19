@@ -188,7 +188,7 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
 	  ngammas[ii][jj][kk]=nion_p[jk]*ngamma_p[ii][jj][kk];	     
 	}
 #else
-    fortran_prepar_fftw_real_3d_with_xfrac(&nh[0][0][0],&nhs[0][0][0],&xfrac[jk][0][0][0],&len);
+    fortran_prepar_fftw_real_3d_with_xfrac(&nh_p[0][0][0],&nhs[0][0][0],&xfrac_p[jk][0][0][0],&len);
     fortran_multiply_constant_fftw_real_3d(&ngamma_p[0][0][0],&nion_p[jk],&ngammas[0][0][0], &len);
 #endif
     //Smoothing with real space spherical filter
