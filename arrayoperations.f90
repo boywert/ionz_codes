@@ -35,7 +35,7 @@ subroutine fortran_multiply_constant_fftw_real_3d(intput,constant,output,len) bi
   real(C_FLOAT) :: input(len),output(len)
   output(:) = constant*input(:)
   return
-end subroutine fortran_copy_fftw_real_3d
+end subroutine fortran_multiply_constant_fftw_real_3d
 
 subroutine fortran_condition_ionize(nh,ngamma,nxion,len) bind(C)
   use iso_c_binding
