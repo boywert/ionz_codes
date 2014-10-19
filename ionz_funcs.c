@@ -131,7 +131,10 @@ void subgrid_reionization(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real **
  * @param N3 3rd dimension grid
  */
 void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****xfrac_p, fftw_real ****nxion_p, double robar, float *nion_p, int Nnion, int N1, int N2, int N3) {
-  int ii,jj,kk,jk;
+#if USE_FORTRAN_SPEEDUP_ARRAY
+  int ii,jj,kk;
+#endif
+  int jk;
   double nh;
   double t_start,t_stop;
   int len = N1*N2*(N3+2);
