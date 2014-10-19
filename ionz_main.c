@@ -18,9 +18,8 @@ struct_const constvars = {3.14159265359,1024,0.1,2.0};
  * @return 
  */
 int main(int argc, char **argv) {
-  int ii, jj;
+  int ii, jj, jk;
   float r_min,r_max;
-  char file2[300];
   int Nnion,N1,N2,N3;
   float *nion; 
   double robar,robarhalo;
@@ -132,8 +131,7 @@ int main(int argc, char **argv) {
   for(ii=0;ii<Nnion;ii++) {
     nion[ii] = input_param.nion[ii];
   }
-  vion=(double*)calloc(Nnion,sizeof(double));
-  roion=(double*)calloc(Nnion,sizeof(double));
+
   N1 = input_param.N1;
   N2 = input_param.N2;
   N3 = input_param.N3;
