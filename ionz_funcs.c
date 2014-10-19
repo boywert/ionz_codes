@@ -134,7 +134,7 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
   int ii,jj,kk,jk;
   double nh;
   double t_start,t_stop;
-  int len = N1*N2*N3;
+  int len = N1*N2*(N3+2);
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
   t_start = Get_Current_time();
   for(jk=0;jk<Nnion;jk++) {
