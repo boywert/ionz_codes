@@ -23,7 +23,7 @@ subroutine fortran_prepar_fftw_real_3d_with_xfrac(nh,nhs,xfrac,len) bind(C)
   implicit none
   integer(C_INT) :: len
   real(C_FLOAT) :: nh(len),nhs(len),xfrac(len)
-  nhs(:) = nh(:)*(1.0-xfrac(:))
+  nhs(:) = nh(:)*xfrac(:)
   return
 end subroutine fortran_prepar_fftw_real_3d_with_xfrac
 

@@ -184,7 +184,7 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
-	  nhs[ii][jj][kk]=nh_p[ii][jj][kk]*(1.-xfrac_p[jk][ii][jj][kk]);
+	  nhs[ii][jj][kk]=nh_p[ii][jj][kk]*xfrac_p[jk][ii][jj][kk];
 	  ngammas[ii][jj][kk]=nion_p[jk]*ngamma_p[ii][jj][kk];	     
 	}
 #else
