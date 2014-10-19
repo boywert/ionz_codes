@@ -149,6 +149,7 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
       // Defining the ionization map output file name
       // This is based on the value of nion assigned to it
       sprintf(buff,"mkdir -p %s/%4.2f",dirname,nion[jk]);
+      system(buff);
       sprintf(filename,XFRACFILEPATTERN,dirname,nion[jk],PREFIX,z_out);
       printf("Saving %s\n",filename);
       ii=0; jj=0; kk=0;

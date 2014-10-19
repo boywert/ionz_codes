@@ -304,7 +304,9 @@ int main(int argc, char **argv) {
 
   t_start = Get_Current_time();
   pack_4d_array_mpi_transfer(nxion,buffer,Nnion, N1, N2, N3);
-
+  for(ii=0;ii<Nnion;ii++)
+    free_fftw_real_3d(nxion[ii],N1,N2,N3+2);
+  free(nxion);
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
