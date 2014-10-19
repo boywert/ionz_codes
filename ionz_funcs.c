@@ -99,9 +99,10 @@ void smooth(fftw_real ***ro_dum,float Radii,int N1,int N2, int N3) {
 void subgrid_reionization(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****nxion_p, double robar, float *nion_p, int Nnion, int N1, int N2, int N3) {
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
   int ii,jj,kk;
+#else
+  int len=N1*N2*(N3+2);
 #endif
   int jk;
-  int len=N1*N2*(N3+2);
   for(jk=0;jk<Nnion;jk++) {
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
     //calculating avg. ionization frction
@@ -131,7 +132,7 @@ void subgrid_reionization(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real **
  * @param N3 3rd dimension grid
  */
 void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****xfrac_p, fftw_real ****nxion_p, double robar, float *nion_p, int Nnion, int N1, int N2, int N3) {
-#if USE_FORTRAN_SPEEDUP_ARRAY
+#ifndef USE_FORTRAN_SPEEDUP_ARRAY
   int ii,jj,kk;
   double nh;
 #else
@@ -171,8 +172,13 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
  */
 void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****xfrac_p, fftw_real ****nxion_p, float *nion_p, int Nnion, int N1, int N2, int N3) {
   fftw_real ***nhs,***ngammas;
-  int ii,jj,kk,jk;
+#ifndef USE_FORTRAN_SPEEDUP_ARRAY
+  int ii,jj,kk;
+#else
   int len=N1*N2*(N3+2);
+#endif
+  int jk;
+  
   nhs=allocate_fftw_real_3d(N1,N2,N3+2);
   ngammas=allocate_fftw_real_3d(N1,N2,N3+2);
 
