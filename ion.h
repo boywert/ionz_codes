@@ -54,6 +54,8 @@ struct myMPI {
 /// Input Parameters
 struct params 
 {
+  /// option for the program: 1:single snapshot 2:take xfrac for the previous snapshot
+  int option;
   /// Number of Nions used
   int Nnion;
   /// Ngamma/Nh 

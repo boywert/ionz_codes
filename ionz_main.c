@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
   char outputdir[2000];
 
 
-  int use_prev_xfrac = 1;
+  int use_prev_xfrac = 0;
 
 
 #ifdef PARALLEL
@@ -65,33 +65,35 @@ int main(int argc, char **argv) {
     }
     else if(argc > 2 ) {
       printf("Arguments:\n");
-      printf("nion_file:\t%s\n",argv[1]);
-      read_nion(argv[1]);
-      printf("Omega_matter:\t%s\n",argv[2]);
-      sscanf(argv[2],"%f",&input_param.omegam);
-      printf("Omega_baryon:\t%s\n",argv[3]);
-      sscanf(argv[3],"%f",&input_param.omegab);
-      printf("Omega_Lambda:\t%s\n",argv[4]);
-      sscanf(argv[4],"%f",&input_param.omegalam);
-      printf("Hubble_h:\t%s\n",argv[5]);
-      sscanf(argv[5],"%f",&input_param.Hubble_h);
-      printf("N_grid:\t%s\n",argv[6]);
-      sscanf(argv[6],"%d",&input_param.N1);
+      printf("option:\t%s\n",argv[1]);
+      sscanf(argv[1],"%d",&input_param.option);
+      printf("nion_file:\t%s\n",argv[2]);
+      read_nion(argv[2]);
+      printf("Omega_matter:\t%s\n",argv[3]);
+      sscanf(argv[3],"%f",&input_param.omegam);
+      printf("Omega_baryon:\t%s\n",argv[4]);
+      sscanf(argv[4],"%f",&input_param.omegab);
+      printf("Omega_Lambda:\t%s\n",argv[5]);
+      sscanf(argv[5],"%f",&input_param.omegalam);
+      printf("Hubble_h:\t%s\n",argv[6]);
+      sscanf(argv[6],"%f",&input_param.Hubble_h);
+      printf("N_grid:\t%s\n",argv[7]);
+      sscanf(argv[7],"%d",&input_param.N1);
       input_param.N2 = input_param.N1;
       input_param.N3 = input_param.N1;
-      printf("Boxsize:\t%s\n",argv[7]);
-      sscanf(argv[7],"%f",&input_param.boxsize);
+      printf("Boxsize:\t%s\n",argv[8]);
+      sscanf(argv[8],"%f",&input_param.boxsize);
       input_param.gridsize = input_param.boxsize/(float)input_param.N1;
-      printf("densityfile:\t%s\n",argv[8]);
-      sprintf(input_param.densityfile,"%s",argv[8]);
-      printf("sourcesfile:\t%s\n",argv[9]);
-      sprintf(input_param.sourcesfile,"%s",argv[9]);
-      printf("Current redshift:\t%s\n",argv[10]);
-      sprintf(input_param.cur_z,"%s",argv[10]);
-      printf("Previous redshift:\t%s\n",argv[11]);
-      sprintf(input_param.prev_z,"%s",argv[11]);
-      printf("Output folder:\t%s\n",argv[12]);
-      sprintf(input_param.outputdir,"%s",argv[12]);
+      printf("densityfile:\t%s\n",argv[9]);
+      sprintf(input_param.densityfile,"%s",argv[9]);
+      printf("sourcesfile:\t%s\n",argv[10]);
+      sprintf(input_param.sourcesfile,"%s",argv[10]);
+      printf("Current redshift:\t%s\n",argv[11]);
+      sprintf(input_param.cur_z,"%s",argv[11]);
+      printf("Previous redshift:\t%s\n",argv[12]);
+      sprintf(input_param.prev_z,"%s",argv[12]);
+      printf("Output folder:\t%s\n",argv[13]);
+      sprintf(input_param.outputdir,"%s",argv[13]);
     }
     else {
       printf("Usage[1]: ./exec inputfile\n");
@@ -104,6 +106,7 @@ int main(int argc, char **argv) {
   }
 #ifdef PARALLEL
   MPI_Barrier(MPI_COMM_WORLD);    
+  MPI_Bcast(&input_param.option, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&input_param.Nnion, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&input_param.nion[0], 100, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&input_param.a_expansion, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
@@ -138,7 +141,8 @@ int main(int argc, char **argv) {
   vomegam = input_param.omegam;
   vomegalam = input_param.omegalam;
   vomegab = input_param.omegab;
-
+  if(input_param.option == 2)
+    use_prev_xfrac = 1;
   sprintf(densfilename,"%s",input_param.densityfile);
   sprintf(sourcefilename,"%s",input_param.sourcesfile);
   sprintf(z_out,"%s",input_param.cur_z);
