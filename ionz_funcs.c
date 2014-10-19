@@ -101,7 +101,7 @@ void subgrid_reionization(fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real **
   int ii,jj,kk;
 #endif
   int jk;
-  int len=N1*N2*N3;
+  int len=N1*N2*(N3+2);
   for(jk=0;jk<Nnion;jk++) {
 #ifndef USE_FORTRAN_SPEEDUP_ARRAY
     //calculating avg. ionization frction
@@ -174,30 +174,38 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
 void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_real ****xfrac_p, fftw_real ****nxion_p, float *nion_p, int Nnion, int N1, int N2, int N3) {
   fftw_real ***nhs,***ngammas;
   int ii,jj,kk,jk;
-
+  int len=N1*N2*(N3+2);
   nhs=allocate_fftw_real_3d(N1,N2,N3+2);
   ngammas=allocate_fftw_real_3d(N1,N2,N3+2);
 
   for(jk=0;jk<Nnion;++jk) { 
     //Filling smoothing arrays with the dark matter and source density data
+#ifndef USE_FORTRAN_SPEEDUP_ARRAY
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  nhs[ii][jj][kk]=nh_p[ii][jj][kk]*(1.-xfrac_p[jk][ii][jj][kk]);
-	  ngammas[ii][jj][kk]=ngamma_p[ii][jj][kk];	     
+	  ngammas[ii][jj][kk]=nion_p[jk]*ngamma_p[ii][jj][kk];	     
 	}
+#else
+    fortran_prepar_fftw_real_3d_with_xfrac(&nh[0][0][0],&nhs[0][0][0],&xfrac[jk][0][0][0],&len);
+    fortran_multiply_constant_fftw_real_3d(&ngamma_p[0][0][0],&nion_p[jk],&ngammas[0][0][0], &len);
+#endif
     //Smoothing with real space spherical filter
     smooth(nhs,Radii,N1,N2,N3);
     smooth(ngammas,Radii,N1,N2,N3); 
-    
+#ifndef USE_FORTRAN_SPEEDUP_ARRAY
     for(ii=0;ii<N1;ii++)
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  //Checking the ionization condition
-	  if(nhs[ii][jj][kk]<nion_p[jk]*ngammas[ii][jj][kk]) {
+	  if(nhs[ii][jj][kk]<ngammas[ii][jj][kk]) {
 	    nxion_p[jk][ii][jj][kk]=1.;
 	  }
 	}
+#else
+    fortran_condition_ionize(&nhs[0][0][0],&ngammas[0][0][0],&nxion_p[jk][0][0][0],&len);
+#endif
   }
   free_fftw_real_3d(nhs,N1,N2,N3+2);
   free_fftw_real_3d(ngammas,N1,N2,N3+2);
