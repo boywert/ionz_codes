@@ -27,7 +27,7 @@ subroutine fortran_prepar_fftw_real_3d_with_xfrac(nh,nhs,xfrac,len) bind(C)
   return
 end subroutine fortran_prepar_fftw_real_3d_with_xfrac
 
-subroutine fortran_multiply_constant_fftw_real_3d(intput,constant,output,len) bind(C)
+subroutine fortran_multiply_constant_fftw_real_3d(input,constant,output,len) bind(C)
   use iso_c_binding
   implicit none
   integer(C_INT) :: len
