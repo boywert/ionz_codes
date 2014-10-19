@@ -24,7 +24,7 @@
 #define  max(x,y)  ((x)>(y) ?(x):(y))
 
 #define debug_checkpoint() (printf("CHECKPOINT: Fuction:%s Line:%d File:%s\n",__func__,__LINE__,__FILE__))
-xfrac3d_9.382.bin
+
 #define PREFIX "xfrac3d_"
 #define XFRACFILEPATTERN "%s/%4.2f/%s%s.bin" // dirname,nion,prefix,zout
 
