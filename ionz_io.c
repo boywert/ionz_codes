@@ -141,7 +141,6 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
   double vion[Nnion],roion[Nnion];
   char filename[2000];
   char buff[2000];
-  char sbuff[1000000];
   sinp = fopen(input_param.summary_file,"a");
   fprintf(sinp,"%s\t",z_out);
   for(jk=0;jk<Nnion;jk++) {
