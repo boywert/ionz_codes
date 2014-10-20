@@ -134,13 +134,16 @@ void read_density(char *filename, float *buffer_3d, double *robar_p, int N1, int
   *robar_p /= (1.*(n1)*(n2)*(n3));
 }
 void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, float robar, float *nion, int Nnion, int N1, int N2, int N3) {
-  FILE *inp;
+  FILE *inp,*sinp;
   float xh1;
   int ii,jj,kk,jk,ll,start_ll;
   double t_start, t_stop;
   double vion[Nnion],roion[Nnion];
   char filename[2000];
   char buff[2000];
+  char sbuff[1000000];
+  sinp = fopen(input_param.summary_file,"a");
+  fprintf(sinp,"%s\t",z_out);
   for(jk=0;jk<Nnion;jk++) {
       t_start = Get_Current_time();
     
@@ -181,7 +184,10 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
       // roion[jk]/=(float)robar; // divide by H density to get mass avg. xHI
       t_stop = Get_Current_time();
       printf("nion = %f obtained vol. avg. x_HI=%e mass avg. x_HI=%e : %lf s\n",nion[jk],vion[jk],roion[jk],t_stop-t_start);
+      fprintf(sinp,"%e\t%e\t",vion[jk],roion[jk]);
     }
+  fprintf(sinp,"\n");
+  fclose(sinp);
 }
 
 /** 

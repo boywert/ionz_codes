@@ -92,6 +92,7 @@ struct params
   char prev_z[100];
   /// Output folder
   char outputdir[2000];
+  char summary_file[2000];
 } input_param;
 
 // in read_param.c

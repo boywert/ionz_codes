@@ -92,6 +92,9 @@ int main(int argc, char **argv) {
       sprintf(input_param.prev_z,"%s",argv[12]);
       printf("Output folder:\t%s\n",argv[13]);
       sprintf(input_param.outputdir,"%s",argv[13]);
+      printf("Summary file:\t%s\n",argv[14]);
+      sprintf(input_param.summary_file,"%s",argv[14]);
+                            
     }
     else {
       printf("Usage[1]: ./exec inputfile\n");
@@ -123,6 +126,7 @@ int main(int argc, char **argv) {
   MPI_Bcast(&input_param.cur_z[0],100, MPI_CHAR, 0, MPI_COMM_WORLD);
   MPI_Bcast(&input_param.prev_z[0],100, MPI_CHAR, 0, MPI_COMM_WORLD);
   MPI_Bcast(&input_param.outputdir[0],2000, MPI_CHAR, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&input_param.summary_file[0],2000, MPI_CHAR, 0, MPI_COMM_WORLD); 
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
 
