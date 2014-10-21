@@ -141,6 +141,7 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
   double vion[Nnion],roion[Nnion];
   char filename[2000];
   char buff[2000];
+  int dummy;
   sinp = fopen(input_param.summary_file,"a");
   fprintf(sinp,"%s\t",z_out);
   for(jk=0;jk<Nnion;jk++) {
@@ -158,8 +159,8 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
       start_ll = jk*N1*N2*N3;
       for(ll=start_ll; ll<(jk+1)*N1*N2*N3; ll++) {
 
-	xh1 = 1.-buffer_4d[ll];
-	xh1 = max(xh1,0.0);
+	xh1 = min(1.0,buffer_4d[ll]);
+	// xh1 = max(xh1,0.0);
 	buffer_4d[ll] = xh1;
 
 	vion[jk] += xh1;
@@ -173,10 +174,16 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
       // Writing the x_HI map in binary
       // In the begining 3 integers are written which defines the size
       // of the x_HI array
+      dummy = sizeof(int)*3;
+      fwrite(&dummy,sizeof(int),1,inp);
       fwrite(&N1,sizeof(int),1,inp);
       fwrite(&N2,sizeof(int),1,inp);
       fwrite(&N3,sizeof(int),1,inp);
-      fwrite(&buffer_4d[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);	 
+      fwrite(&dummy,sizeof(int),1,inp);
+      dummy = sizeof(float)*N1*N2*N3;
+      fwrite(&dummy,sizeof(int),1,inp);
+      fwrite(&buffer_4d[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);
+      fwrite(&dummy,sizeof(int),1,inp);
       fclose(inp);
       roion[jk]/=robar*(N1*N2*N3); // mass avg xHI
       vion[jk]/=(1.*N1*N2*N3); // volume avg xHI
@@ -207,10 +214,11 @@ void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion, int Nnion
   char filename[2048];
   int i,jk;
   float zval;
+  int dummy;
   sscanf(z,"%f",&zval);
   if(zval < 0.0) {
     for(i=0;i<Nnion*N1*N2*N3;i++)
-      buffer_4d[i] = 1.0;
+      buffer_4d[i] = 0.0;
     return;
   }
   for(jk=0;jk<Nnion;jk++) {
@@ -221,17 +229,20 @@ void read_xfrac(char *dirname, char *z, float *buffer_4d, float *nion, int Nnion
       printf("Cannot open %s\nTerminate...\n",filename);
       exit(1);
     }
-     
+    fread(&dummy,sizeof(int),1,inp);
     fread(&n1,sizeof(int),1,inp);
     fread(&n2,sizeof(int),1,inp);
     fread(&n3,sizeof(int),1,inp);
+    fread(&dummy,sizeof(int),1,inp);
     if(n1 != N1 || n2 != N2 || n3 != N3) {
       printf("Grid dimensions in %s are not the same as in config file\n",filename);
       printf("Xfrac file: %d:%d:%d   Config file: %d:%d:%d\n",n1,n2,n3,N1,N2,N3);
       printf("Terminate\n");
       exit(1);
     }
+    fread(&dummy,sizeof(int),1,inp);
     fread(&buffer_4d[jk*N1*N2*N3],sizeof(float),n1*n2*n3,inp);
+    fread(&dummy,sizeof(int),1,inp);
     fclose(inp);
   }
 }
