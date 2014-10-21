@@ -210,7 +210,7 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
 	  }
 	}
 #else
-    fortran_condition_ionize(&nhs[0][0][0],&ngammas[0][0][0],&nion_jk[jk],&nxion_p[jk][0][0][0],&len);
+    fortran_condition_ionize(&nhs[0][0][0],&ngammas[0][0][0],&nion_p[jk],&nxion_p[jk][0][0][0],&len);
 #endif
   }
   free_fftw_real_3d(nhs,N1,N2,N3+2);
