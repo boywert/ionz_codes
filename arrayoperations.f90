@@ -37,11 +37,11 @@ subroutine fortran_multiply_constant_fftw_real_3d(input,constant,output,len) bin
   return
 end subroutine fortran_multiply_constant_fftw_real_3d
 
-subroutine fortran_condition_ionize(nh,ngamma,nxion,len) bind(C)
+subroutine fortran_condition_ionize(nh,ngamma,nion,nxion,len) bind(C)
   use iso_c_binding
   implicit none
   integer(C_INT) :: len
-  real(C_FLOAT) :: nh(len),ngamma(len),nxion(len)
-  nxion(:) = max(nxion(:),real(min(int(ngamma(:)/nh(:)),1)))
+  real(C_FLOAT) :: nh(len),ngamma(len),nxion(len),nion
+  nxion(:) = max(nxion(:),real(min(int(ngamma(:)*nion/nh(:)),1)))
   return
 end subroutine fortran_condition_ionize

@@ -137,7 +137,7 @@ extern "C" {
   extern void fortran_subgrid_reionization(fftw_real *nh,fftw_real *ngamma, fftw_real *nxion,float *nion,int *len);
   extern void fortran_prepar_fftw_real_3d_with_xfrac(fftw_real *nh,fftw_real *nhs,fftw_real *xfrac,int *len);
   extern void fortran_multiply_constant_fftw_real_3d(fftw_real *intput,float *constant, fftw_real *output,int *len);
-  extern void fortran_condition_ionize(fftw_real *nh,fftw_real *ngamma,fftw_real *nxion,int *len);
+  extern void fortran_condition_ionize(fftw_real *nh,fftw_real *ngamma, float*nion, fftw_real *nxion,int *len);
 #ifdef __cplusplus
 }
 #endif
