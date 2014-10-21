@@ -176,7 +176,7 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
   int ii,jj,kk;
 #else
   int len=N1*N2*(N3+2);
-  int one = 1;
+  float one = 1.;
 #endif
   int jk;
   
@@ -236,7 +236,7 @@ void reionization(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_rea
   int ii,jj,kk;
 #else
   int len = N1*N2*(N3+2);
-  int one = 1;
+  float one = 1.;
 #endif
   int jk;
 
