@@ -205,12 +205,12 @@ void reionization_with_xfrac(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  //Checking the ionization condition
-	  if(nhs[ii][jj][kk]<ngammas[ii][jj][kk]) {
+	  if(nhs[ii][jj][kk]<ngammas[ii][jj][kk]*nion_p[jk]) {
 	    nxion_p[jk][ii][jj][kk]=1.;
 	  }
 	}
 #else
-    fortran_condition_ionize(&nhs[0][0][0],&ngammas[0][0][0],&nion[jk],&nxion_p[jk][0][0][0],&len);
+    fortran_condition_ionize(&nhs[0][0][0],&ngammas[0][0][0],&nion_jk[jk],&nxion_p[jk][0][0][0],&len);
 #endif
   }
   free_fftw_real_3d(nhs,N1,N2,N3+2);
@@ -271,7 +271,7 @@ void reionization(float Radii,fftw_real ***nh_p, fftw_real ***ngamma_p, fftw_rea
 	}
 #else
   for(jk=0;jk<Nnion;jk++)
-    fortran_condition_ionize(&nhs[0][0][0],&ngammas[0][0][0],&nion[jk],&nxion_p[jk][0][0][0],&len);
+    fortran_condition_ionize(&nhs[0][0][0],&ngammas[0][0][0],&nion_p[jk],&nxion_p[jk][0][0][0],&len);
 #endif
 
   free_fftw_real_3d(nhs,N1,N2,N3+2);
