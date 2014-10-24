@@ -145,7 +145,7 @@ void subgrid_reionization_with_xfrac(fftw_real ***nh_p, fftw_real ***ngamma_p, f
       for(jj=0;jj<N2;jj++)
 	for(kk=0;kk<N3;kk++) {
 	  nh = nh_p[ii][jj][kk]*(1.0-xfrac_p[jk][ii][jj][kk]);
-	  nxion_p[jk][ii][jj][kk]=min(1.0,nion_p[jk]*ngamma_p[ii][jj][kk]/nh);	  
+	  nxion_p[jk][ii][jj][kk]=min(1.0,xfrac_p[jk][ii][jj][kk] + (1.0-xfrac_p[jk][ii][jj][kk])*nion_p[jk]*ngamma_p[ii][jj][kk]/nh);	  
 	}
   }
 #else
