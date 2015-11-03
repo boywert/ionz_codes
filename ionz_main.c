@@ -23,6 +23,8 @@ double Mpc2cm = 3.08e18;
  * @return 
  */
 int main(int argc, char **argv) {
+  const hmass = 1.6737237e-27;
+  const Msun2kg = 1.98855e30;
   int ii, jj, jk;
   float r_min,r_max;
   int Nnion,N1,N2,N3;
@@ -99,7 +101,8 @@ int main(int argc, char **argv) {
       sprintf(input_param.outputdir,"%s",argv[13]);
       printf("Summary file:\t%s\n",argv[14]);
       sprintf(input_param.summary_file,"%s",argv[14]);
-                            
+      printf("Mass unit (in Msun):\t%s\n",argv[15]);
+      sscanf(argv[15],"%f", &input_param.mass_unit);
     }
     else {
       printf("Usage[1]: ./exec inputfile\n");
@@ -131,7 +134,8 @@ int main(int argc, char **argv) {
   MPI_Bcast(&input_param.cur_z[0],100, MPI_CHAR, 0, MPI_COMM_WORLD);
   MPI_Bcast(&input_param.prev_z[0],100, MPI_CHAR, 0, MPI_COMM_WORLD);
   MPI_Bcast(&input_param.outputdir[0],2000, MPI_CHAR, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&input_param.summary_file[0],2000, MPI_CHAR, 0, MPI_COMM_WORLD); 
+  MPI_Bcast(&input_param.summary_file[0],2000, MPI_CHAR, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&input_param.mass_unit, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
 
@@ -152,7 +156,7 @@ int main(int argc, char **argv) {
   sscanf(input_param.cur_z,"%g",&z_out_float);
   sscanf(input_param.prev_z,"%g",&z_prev_float);
   dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
-  alpha_H_dt = alpha_H * dt / Mpc2cm/ (input_param.gridsize/input_param.Hubble_h);
+  alpha_H_dt = alpha_H *input_param.mass_unit * Msun2kg / hmass * dt / Mpc2cm/ (input_param.gridsize/input_param.Hubble_h);
   if(mympi.ThisTask == 0)
     printf("alpha_H * dt = %lg, dt = %lg\n",alpha_H_dt,dt/(3600*24*365.25));
   if(input_param.option == 1)

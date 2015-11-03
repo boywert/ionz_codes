@@ -94,6 +94,8 @@ struct params
   /// Output folder
   char outputdir[2000];
   char summary_file[2000];
+  /// mass unit (in Msun)
+  float mass_unit;
 } input_param;
 
 // in read_param.c
