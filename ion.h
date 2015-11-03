@@ -101,7 +101,7 @@ extern void read_nion(char *filename);
 extern void read_params(char *filename);
 
 /* in ionz_misc.c */
-extern double delta_t(float z_max, float z_min,float Om, float H0, float h);
+extern double delta_t(float z_max, float z_min,float Om, float h);
 extern int make_radii_list(float *radii_p, float r_min, float r_max, float dr_inc, float max_dr);
 extern double Get_Current_time();
 

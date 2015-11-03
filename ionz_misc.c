@@ -13,8 +13,9 @@
 float cal_H(float z, float H0, float Om) {
   return H0*sqrt(Om*(1.+z)*(1.+z)*(1.+z) + (1.-Om));
 }
-double delta_t(float z_max, float z_min,float Om, float H0, float h) {
+double delta_t(float z_max, float z_min,float Om, float h) {
   int i,n = 100000;
+  const float H0 = 100.0;
   const float Mpc2m = 3.08567758e22;
   double dt,dz,F1,F2,z1,z2;
   dt = 0.;
