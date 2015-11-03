@@ -10,6 +10,8 @@
 
 #include "ion.h"
 
+
+
 /** 
  * Set up memory for nh, ngamma and nxion
  * 

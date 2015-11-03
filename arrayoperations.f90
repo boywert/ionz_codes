@@ -45,3 +45,4 @@ subroutine fortran_condition_ionize(nh,ngamma,nion,nxion,len) bind(C)
   nxion(:) = max(nxion(:),real(min(int(ngamma(:)*nion/nh(:)),1)))
   return
 end subroutine fortran_condition_ionize
+

@@ -8,7 +8,11 @@
  */
 
 #include "ion.h"
+double alpha_H = 4e-13; // cm^3/s
 struct_const constvars = {3.14159265359,1024,0.1,2.0};
+double Mpc2cm = 3.08e18;
+
+
 /** 
  * Main program
  * 
@@ -40,8 +44,8 @@ int main(int argc, char **argv) {
   char densfilename[2000], sourcefilename[2000];
   char z_prev[1000],z_out[1000];
   char outputdir[2000];
-
-
+  float z_prev_float,z_out_float;
+  double dt;
   int use_prev_xfrac = 0;
   int subgrid_only = 0;
 
@@ -143,6 +147,13 @@ int main(int argc, char **argv) {
   vomegalam = input_param.omegalam;
   vomegab = input_param.omegab;
 
+  // calculate alpha_H_dt
+  sscanf(input_param.cur_z,"%lg",&z_out_float);
+  sscanf(input_param.prev_z,"%lg",z_prev_float);
+  dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
+  alpha_H_dt = alpha_H * dt / Mpc2cm/ (Boxsize/input_param.Hubble_h/(N1*N2*N3));
+  if(mympi.ThisTask == 0)
+    printf("alpha_H * dt = %lg\n",alpha_H_dt);
   if(input_param.option == 1)
     ;
   else if(input_param.option == 2)
@@ -231,8 +242,9 @@ int main(int argc, char **argv) {
   /* Read xfrac from previous snapshot */
   if(use_prev_xfrac == 1) {
     buffer = malloc(sizeof(float)*Nnion*N1*N2*N3);
-    if(mympi.ThisTask == 0)
+    if(mympi.ThisTask == 0) {
       read_xfrac(outputdir, z_prev, buffer, nion, Nnion, N1, N2, N3);
+    }
 #ifdef PARALLEL
     MPI_Barrier(MPI_COMM_WORLD);
 #ifdef CHUNKTRANSFER

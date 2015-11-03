@@ -10,6 +10,24 @@
 
 #include "ion.h"
 
+float cal_H(float z, float H0, float Om) {
+  return H0*sqrt(Om*(1.+z)*(1.+z)*(1.+z) + (1.-Om));
+}
+double delta_t(float z_max, float z_min,float Om, float H0, float h) {
+  int i,n = 100000;
+  const float Mpc2m = 3.08567758e22;
+  double dt,dz,F1,F2,z1,z2;
+  dt = 0.;
+  dz = (z_max - z_min)/n;
+  for(i=0;i<n;i++) {
+    z1 = z_min + dz*i;
+    z2 = z1+dz;
+    F1 = 1./(1.+z1)/cal_H(z1,H0,Om);
+    F2 = 1./(1.+z2)/cal_H(z2,H0,Om);
+    dt += 0.5*(F1+F2)*dz;
+  }
+  return dt*(Mpc2m/h/1000.);
+}
 
 
 void chunk_float_mpi_bcast(float *buffer, int len, int mpi_buffer,int root) {
