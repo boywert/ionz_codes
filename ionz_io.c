@@ -129,7 +129,6 @@ void read_density(char *filename, float *buffer_3d, double *robar_p, int N1, int
   
   for(ii=0;ii<n1*n2*n3;ii++) {
     buffer_3d[ii] *= vomegab/vomegam;
-    printf("%lg\n",buffer_3d[ii]);
     *robar_p += buffer_3d[ii];
   }
   *robar_p /= (1.*(n1)*(n2)*(n3));
