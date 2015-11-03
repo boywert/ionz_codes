@@ -148,8 +148,8 @@ int main(int argc, char **argv) {
   vomegab = input_param.omegab;
 
   // calculate alpha_H_dt
-  sscanf(input_param.cur_z,"%lg",&z_out_float);
-  sscanf(input_param.prev_z,"%lg",z_prev_float);
+  sscanf(input_param.cur_z,"%g",&z_out_float);
+  sscanf(input_param.prev_z,"%g",&z_prev_float);
   dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
   alpha_H_dt = alpha_H * dt / Mpc2cm/ (Boxsize/input_param.Hubble_h/(N1*N2*N3));
   if(mympi.ThisTask == 0)
