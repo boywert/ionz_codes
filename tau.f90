@@ -11,8 +11,8 @@
       real*8,dimension(100) :: frac_m, frac_v, z, tau_es, tau_es_full
       real*8 :: tau0, coeff, zred
 
-      open(1,file='./results/xfractions')
-      open(2,file='tau_47Mpc_f2_0_306.dat')
+      open(1,file='runall_oka_infall.pbs.log')
+      open(2,file='data.tau')
 
       do i=1,100
          read(1,*,end=10) z(i),frac_v(i),frac_m(i)  
