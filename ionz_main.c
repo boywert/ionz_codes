@@ -23,8 +23,8 @@ double Mpc2cm = 3.08e18;
  * @return 
  */
 int main(int argc, char **argv) {
-  const hmass = 1.6737237e-27;
-  const Msun2kg = 1.98855e30;
+  const double hmass = 1.6737237e-27;
+  const double Msun2kg = 1.98855e30;
   int ii, jj, jk;
   float r_min,r_max;
   int Nnion,N1,N2,N3;
