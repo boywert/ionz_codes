@@ -5,7 +5,7 @@
 
       integer :: i,n
       real*8,parameter :: omega0=0.27,lambda0=0.73, omegab=0.044, h=0.7
-      real*8,parameter :: rho_crait_0=1.88e-29*h**2, m_p=1.67e-24
+      real*8,parameter :: rho_crit_0=1.88e-29*h**2, m_p=1.67e-24
       real*8,parameter :: mu_H=1.32, sigma_T=6.65e-25, c=3e10
       real*8,parameter :: AHe=0.08, chi1=1.+AHe, chi2=1.+2.*AHe
       real*8,dimension(100) :: frac_m, frac_v, z, tau_es, tau_es_full
