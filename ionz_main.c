@@ -156,10 +156,10 @@ int main(int argc, char **argv) {
   sscanf(input_param.cur_z,"%g",&z_out_float);
   sscanf(input_param.prev_z,"%g",&z_prev_float);
   dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
-  alpha_H_dt = (double)alpha_H *(double)input_param.mass_unit * (double)Msun2kg / (double)hmass * dt / pow3((double)Mpc2cm *(double)(input_param.gridsize/input_param.Hubble_h));
+  alpha_H_dt = (double)alpha_H *(double)input_param.mass_unit * (double)Msun2kg / (double)hmass * dt ; //pow3((double)Mpc2cm *(double)(input_param.gridsize/input_param.Hubble_h));
   // alpha_H_dt = (double)alpha_H /pow3((double)Mpc2cm*(double)(input_param.gridsize/input_param.Hubble_h));
   if(mympi.ThisTask == 0)
-    printf("alpha_H * dt = %lg, dt = %lg years\n",alpha_H_dt,dt/(3600*24*365.25));
+    printf("alpha_H * dt = %lg, dt = %lg years\n, test %f",alpha_H_dt,dt/(3600*24*365.25),pow3(2.));
   if(input_param.option == 1)
     ;
   else if(input_param.option == 2)
