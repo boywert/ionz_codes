@@ -20,8 +20,7 @@
  10   n=i-1
       print*,n,z(n)
       
-      coeff = 2.*c*sigma_T*Omegab*rho_crit_0/
-     &     (3.*100.*h/3.086e19*m_p*Omega0)*chi1/mu_H
+      coeff = 2.*c*sigma_T*Omegab*rho_crit_0/(3.*100.*h/3.086e19*m_p*Omega0)*chi1/mu_H
       do i=0,50
          zred=real(i)/50.*z(n)
          tau0 = coeff*(sqrt(omega0*(1.+zred)**3+lambda0) - 1.) 
@@ -33,10 +32,10 @@
       print*,z(n),tau_es(n)
       write(2,*) z(n)+1.,tau_es(n),tau_es(n)
       do i=n-1,1,-1
-         tau_es(i) =tau_es(i+1)+1.5*coeff*Omega0*
-     &        (frac_m(i)*(1.+z(i))**2/sqrt(omega0*(1.+z(i))**3+lambda0)
-     &        + frac_m(i+1)*(1.+z(i+1))**2/sqrt(omega0*(1.+z(i+1))**3+lambda0)
-     &        )*(-z(i+1)+z(i))/2.
+         tau_es(i) =tau_es(i+1)+1.5*coeff*Omega0* &
+            (frac_m(i)*(1.+z(i))**2/sqrt(omega0*(1.+z(i))**3+lambda0) &
+            + frac_m(i+1)*(1.+z(i+1))**2/sqrt(omega0*(1.+z(i+1))**3+lambda0) &
+            )*(-z(i+1)+z(i))/2.
          tau_es_full(i)= coeff*(sqrt(omega0*(1.+z(i))**3+lambda0) - 1.)
 !     print*,z(i),tau_es(i)+0.011
 !     write(2,*) z(i)+1.,tau_es(i)+0.011,tau_es_full(i)+0.011
