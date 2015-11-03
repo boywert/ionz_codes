@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
   sscanf(input_param.cur_z,"%g",&z_out_float);
   sscanf(input_param.prev_z,"%g",&z_prev_float);
   dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
-  alpha_H_dt = alpha_H * dt / Mpc2cm/ (Boxsize/input_param.Hubble_h/(N1*N2*N3));
+  alpha_H_dt = alpha_H * dt / Mpc2cm/ (input_param.gridsize/input_param.Hubble_h);
   if(mympi.ThisTask == 0)
     printf("alpha_H * dt = %lg\n",alpha_H_dt);
   if(input_param.option == 1)
