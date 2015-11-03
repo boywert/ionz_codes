@@ -154,7 +154,7 @@ int main(int argc, char **argv) {
   dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
   alpha_H_dt = alpha_H * dt / Mpc2cm/ (input_param.gridsize/input_param.Hubble_h);
   if(mympi.ThisTask == 0)
-    printf("alpha_H * dt = %lg\n",alpha_H_dt);
+    printf("alpha_H * dt = %lg, dt = %lg\n",alpha_H_dt,dt/(3600*24*365.25));
   if(input_param.option == 1)
     ;
   else if(input_param.option == 2)
