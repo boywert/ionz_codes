@@ -9,6 +9,7 @@
 
 #include "ion.h"
 double alpha_H = 4e-13; // cm^3/s
+double alpha_H_dt = 0; // dimensionless
 struct_const constvars = {3.14159265359,1024,0.1,2.0};
 double Mpc2cm = 3.08e18;
 
