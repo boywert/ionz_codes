@@ -47,4 +47,4 @@
       close(1)
       close(2)
       stop
-      end
+      end program tau
