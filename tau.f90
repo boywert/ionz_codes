@@ -11,7 +11,7 @@
       real*8,dimension(100) :: frac_m, frac_v, z, tau_es, tau_es_full
       real*8 :: tau0, coeff, zred
 
-      open(1,file='runall_nore_infall.pbs.log')
+      open(1,file='/scratch/01937/cs390/Hybrid/summary/4100.00.sum')
       open(2,file='data.tau')
 
       do i=1,100
