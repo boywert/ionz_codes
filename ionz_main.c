@@ -11,7 +11,7 @@
 double alpha_H = 4e-13; // cm^3/s
 double alpha_H_dt = 0; // dimensionless
 struct_const constvars = {3.14159265359,1024,0.1,2.0};
-double Mpc2cm = 3.08e18;
+double Mpc2cm = 3.08567758e24;
 
 
 /** 
@@ -156,8 +156,8 @@ int main(int argc, char **argv) {
   sscanf(input_param.cur_z,"%g",&z_out_float);
   sscanf(input_param.prev_z,"%g",&z_prev_float);
   dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
-  alpha_H_dt = (double)alpha_H *(double)input_param.mass_unit * (double)Msun2kg / (double)hmass * dt / (double)Mpc2cm/ (double)(input_param.gridsize/input_param.Hubble_h);
-  alpha_H_dt = (double)alpha_H /  (double)Mpc2cm/ (double)(input_param.gridsize/input_param.Hubble_h);
+  alpha_H_dt = (double)alpha_H *(double)input_param.mass_unit * (double)Msun2kg / (double)hmass * dt / pow3((double)Mpc2cm *(double)(input_param.gridsize/input_param.Hubble_h));
+  // alpha_H_dt = (double)alpha_H /pow3((double)Mpc2cm*(double)(input_param.gridsize/input_param.Hubble_h));
   if(mympi.ThisTask == 0)
     printf("alpha_H * dt = %lg, dt = %lg years\n",alpha_H_dt,dt/(3600*24*365.25));
   if(input_param.option == 1)

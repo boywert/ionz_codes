@@ -19,7 +19,7 @@
 #include <mpi.h>
 #endif
 
-
+#define pow3(x) x*x*x
 #define  min(x,y)  ((x)<(y) ?(x):(y))
 #define  max(x,y)  ((x)>(y) ?(x):(y))
 
