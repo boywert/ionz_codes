@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
   alpha_H_dt = (double)alpha_H *(double)input_param.mass_unit * (double)Msun2kg / (double)hmass * dt ; //pow3((double)Mpc2cm *(double)(input_param.gridsize/input_param.Hubble_h));
   // alpha_H_dt = (double)alpha_H /pow3((double)Mpc2cm*(double)(input_param.gridsize/input_param.Hubble_h));
   if(mympi.ThisTask == 0)
-    printf("alpha_H * dt = %lg, dt = %lg years\n, test %f",alpha_H_dt,dt/(3600*24*365.25),pow3(2.));
+    printf("alpha_H * dt = %lg, dt = %lg years, test = %lg\n",alpha_H_dt,dt/(3600*24*365.25),pow3((double)Mpc2cm *(double)(input_param.gridsize/input_param.Hubble_h)));
   if(input_param.option == 1)
     ;
   else if(input_param.option == 2)
