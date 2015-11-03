@@ -156,7 +156,7 @@ int main(int argc, char **argv) {
   sscanf(input_param.cur_z,"%g",&z_out_float);
   sscanf(input_param.prev_z,"%g",&z_prev_float);
   dt = delta_t(z_prev_float, z_out_float,vomegam,input_param.Hubble_h);
-  alpha_H_dt = alpha_H *input_param.mass_unit * Msun2kg / hmass * dt / Mpc2cm/ (input_param.gridsize/input_param.Hubble_h);
+  alpha_H_dt = (double)alpha_H *(double)input_param.mass_unit * (double)Msun2kg / (double)hmass * dt / (double)Mpc2cm/ (double)(input_param.gridsize/input_param.Hubble_h);
   if(mympi.ThisTask == 0)
     printf("alpha_H * dt = %lg, dt = %lg\n",alpha_H_dt,dt/(3600*24*365.25));
   if(input_param.option == 1)
