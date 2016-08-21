@@ -70,3 +70,6 @@ def main():
     os.system("mkdir -p "+outputdir)
     create_pbs(srcdir,outputdir,summaryfile,pbsfile,logfile)
     #submit_pbs(pbsfile)
+
+if __name__=="__main__":
+    main()
