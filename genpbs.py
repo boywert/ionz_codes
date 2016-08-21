@@ -10,7 +10,7 @@ hubble_h = 0.7
 ngrid = 306
 boxsize = 47.0
 mass_unit =269244.796603
-
+option = 0
 densdir="/scratch/01937/cs390/data/nc306/"
 zlistfile="/scratch/01937/cs390/data/snap_z3.txt"
 z2listfile="/scratch/01937/cs390/data/snap_z.txt"
@@ -51,7 +51,7 @@ def create_pbs(srcdir,outputdir,summaryfile,pbsfile):
             denfile = densdir+"/"+z3+"n_all.dat"
             srcfile = srcdir+"/"+z2+".dat"
             print >> f, "echo 'z = "+z3+"'"
-            print >> f, 'ibrun tacc_affinity',execfile,nion_list,omegam,omegab,omegal,hubble_h,ngrid,boxsize,denfile,srcfile,z3,prev_z,outputdir,summaryfile,mass_unit
+            print >> f, 'ibrun tacc_affinity',execfile,option,nion_list,omegam,omegab,omegal,hubble_h,ngrid,boxsize,denfile,srcfile,z3,prev_z,outputdir,summaryfile,mass_unit
     f.close
 
 def main():
