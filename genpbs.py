@@ -22,7 +22,7 @@ def create_pbs(srcdir,outputdir,summaryfile,pbsfile):
     f = open(pbsfile,"w+")
     header = "#!/bin/bash\n"
     header += "#SBATCH -J %s\n" % (pbsfile)
-    header += "#SBATCH -o %s.o\%j\n" % (pbsfile)        
+    header += "#SBATCH -o %s.o%%j\n" % (pbsfile)        
     header += """#SBATCH -N 3             
 #SBATCH -n 144             
 #SBATCH -p normal      
