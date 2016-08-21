@@ -55,18 +55,18 @@ def create_pbs(srcdir,outputdir,summaryfile,pbsfile):
     f.close
 
 def main():
-    srcdir="/scratch/01937/cs390/data/outputs/no_reionization/wmap7/"
-    outputdir = "/scratch/01937/cs390/data/outputs/no_reionization/wmap7/SEMNUM/"
-    summaryfile = "/scratch/01937/cs390/data/outputs/no_reionization/wmap7/SEMNUM/sumfile.sum"
-    pbsfile = "/scratch/01937/cs390/data/outputs/no_reionization/wmap7/SEMNUM/lonestar.pbs"
+    srcdir="/scratch/01937/cs390/data/CSFR/no_reionization/wmap7/"
+    outputdir = "/scratch/01937/cs390/data/CSFR/no_reionization/wmap7/SEMNUM/"
+    summaryfile = "/scratch/01937/cs390/data/CSFR/no_reionization/wmap7/SEMNUM/sumfile.sum"
+    pbsfile = "/scratch/01937/cs390/data/CSFR/no_reionization/wmap7/SEMNUM/lonestar.pbs"
     os.system("mkdir -p "+outputdir)
     create_pbs(srcdir,outputdir,summaryfile,pbsfile,logfile)
     #submit_pbs(pbsfile)
     
-    srcdir="/scratch/01937/cs390/data/outputs/okamoto/wmap7/"
-    outputdir = "/scratch/01937/cs390/data/outputs/okamoto/wmap7/SEMNUM/"
-    summaryfile = "/scratch/01937/cs390/data/outputs/okamoto/wmap7/SEMNUM/sumfile.sum"
-    pbsfile = "/scratch/01937/cs390/data/outputs/okamoto/wmap7/SEMNUM/lonestar.pbs"
+    srcdir="/scratch/01937/cs390/data/CSFR/okamoto/wmap7/"
+    outputdir = "/scratch/01937/cs390/data/CSFR/okamoto/wmap7/SEMNUM/"
+    summaryfile = "/scratch/01937/cs390/data/CSFR/okamoto/wmap7/SEMNUM/sumfile.sum"
+    pbsfile = "/scratch/01937/cs390/data/CSFR/okamoto/wmap7/SEMNUM/lonestar.pbs"
     os.system("mkdir -p "+outputdir)
     create_pbs(srcdir,outputdir,summaryfile,pbsfile,logfile)
     #submit_pbs(pbsfile)
