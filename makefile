@@ -1,5 +1,5 @@
-export TACC_FFTW2_LIB=/home/c/cs/cs390/local/fftw-2.1.5/install/lib/
-export TACC_FFTW2_INC=/home/c/cs/cs390/local/fftw-2.1.5/install/include/
+#export TACC_FFTW2_LIB=/home/c/cs/cs390/local/fftw-2.1.5/install/lib/
+#export TACC_FFTW2_INC=/home/c/cs/cs390/local/fftw-2.1.5/install/include/
 LINKLIB= -L${TACC_FFTW2_LIB} -lsrfftw -lsfftw 
 INCLUDE= -I${TACC_FFTW2_INC}
 CFLAGS=-g -Wall -std=c99
