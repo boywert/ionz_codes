@@ -21,13 +21,13 @@ def submit_pbs(pbsfile):
 def create_pbs(srcdir,outputdir,summaryfile,pbsfile):
     f = open(pbsfile,"w+")
     header = """#!/bin/bash
-#SBATCH -J %s            
-#SBATCH -o %s.o%j        
-#SBATCH -N 1             
-#SBATCH -n 1             
-#SBATCH -p normal      
-#SBATCH -t 24:00:00        
-#SBATCH -A A-asoz""" % (pbsfile,pbsfile)
+    #SBATCH -J %s            
+    #SBATCH -o %s.o%j        
+    #SBATCH -N 3             
+    #SBATCH -n 144             
+    #SBATCH -p normal      
+    #SBATCH -t 24:00:00        
+    #SBATCH -A A-asoz""" % (pbsfile,pbsfile)
 
     print >> f, header 
     zf = open(zlistfile,"r")
