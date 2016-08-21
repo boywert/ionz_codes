@@ -135,6 +135,7 @@ void read_density(char *filename, float *buffer_3d, double *robar_p, int N1, int
 }
 void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, float robar, float *nion, int Nnion, int N1, int N2, int N3) {
   FILE *inp,*sinp;
+  char th_filename[2000];
   float xh1;
   int ii,jj,kk,jk,ll,start_ll;
   double t_start, t_stop;
@@ -142,58 +143,59 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
   char filename[2000];
   char buff[2000];
   int dummy;
-  sinp = fopen(input_param.summary_file,"a");
-  fprintf(sinp,"%s\t",z_out);
+  
   for(jk=0;jk<Nnion;jk++) {
-      t_start = Get_Current_time();
+    sprintf(th_filename,"%s_%4.2f",input_param.summary_file,nion[jk]);
+    sinp = fopen(th_filename,"a");
+    fprintf(sinp,"%s\t",z_out);
+    t_start = Get_Current_time();
     
-      vion[jk]=0.0;
-      roion[jk]=0.0;
+    vion[jk]=0.0;
+    roion[jk]=0.0;
       // Defining the ionization map output file name
       // This is based on the value of nion assigned to it
-      sprintf(buff,"mkdir -p %s/%4.2f",dirname,nion[jk]);
-      system(buff);
-      sprintf(filename,XFRACFILEPATTERN,dirname,nion[jk],PREFIX,z_out);
-      printf("Saving %s\n",filename);
-      ii=0; jj=0; kk=0;
-      start_ll = jk*N1*N2*N3;
-      for(ll=start_ll; ll<(jk+1)*N1*N2*N3; ll++) {
-
-	xh1 = min(1.0,buffer_4d[ll]);
-	// xh1 = max(xh1,0.0);
-	buffer_4d[ll] = xh1;
-
-	vion[jk] += xh1;
-	roion[jk] += xh1*nh[ii][jj][kk];
-	ii = (ll-start_ll) % N1;
-	jj = ((ll-start_ll)/N1) % N2;
-	kk = ((ll-start_ll)/(N1*N2)) % N3;
-      }
+    sprintf(buff,"mkdir -p %s/%4.2f",dirname,nion[jk]);
+    system(buff);
+    sprintf(filename,XFRACFILEPATTERN,dirname,nion[jk],PREFIX,z_out);
+    printf("Saving %s\n",filename);
+    ii=0; jj=0; kk=0;
+    start_ll = jk*N1*N2*N3;
+    for(ll=start_ll; ll<(jk+1)*N1*N2*N3; ll++) {
+      xh1 = min(1.0,buffer_4d[ll]);
+      // xh1 = max(xh1,0.0);
+      buffer_4d[ll] = xh1;
       
-      inp=fopen(filename,"wb+");
-      // Writing the x_HI map in binary
-      // In the begining 3 integers are written which defines the size
-      // of the x_HI array
-      dummy = sizeof(int)*3;
-      fwrite(&dummy,sizeof(int),1,inp);
-      fwrite(&N1,sizeof(int),1,inp);
-      fwrite(&N2,sizeof(int),1,inp);
-      fwrite(&N3,sizeof(int),1,inp);
-      fwrite(&dummy,sizeof(int),1,inp);
-      dummy = sizeof(float)*N1*N2*N3;
-      fwrite(&dummy,sizeof(int),1,inp);
-      fwrite(&buffer_4d[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);
-      fwrite(&dummy,sizeof(int),1,inp);
-      fclose(inp);
-      roion[jk]/=robar*(N1*N2*N3); // mass avg xHI
-      vion[jk]/=(1.*N1*N2*N3); // volume avg xHI
-      // roion[jk]/=(float)robar; // divide by H density to get mass avg. xHI
-      t_stop = Get_Current_time();
-      printf("nion = %f obtained vol. avg. x_HI=%e mass avg. x_HI=%e : %lf s\n",nion[jk],vion[jk],roion[jk],t_stop-t_start);
-      fprintf(sinp,"%e\t%e\t",vion[jk],roion[jk]);
+      vion[jk] += xh1;
+      roion[jk] += xh1*nh[ii][jj][kk];
+      ii = (ll-start_ll) % N1;
+      jj = ((ll-start_ll)/N1) % N2;
+      kk = ((ll-start_ll)/(N1*N2)) % N3;
     }
-  fprintf(sinp,"\n");
-  fclose(sinp);
+    
+    inp=fopen(filename,"wb+");
+    // Writing the x_HI map in binary
+    // In the begining 3 integers are written which defines the size
+    // of the x_HI array
+    dummy = sizeof(int)*3;
+    fwrite(&dummy,sizeof(int),1,inp);
+    fwrite(&N1,sizeof(int),1,inp);
+    fwrite(&N2,sizeof(int),1,inp);
+    fwrite(&N3,sizeof(int),1,inp);
+    fwrite(&dummy,sizeof(int),1,inp);
+    dummy = sizeof(float)*N1*N2*N3;
+    fwrite(&dummy,sizeof(int),1,inp);
+    fwrite(&buffer_4d[jk*N1*N2*N3],sizeof(float),N1*N2*N3,inp);
+    fwrite(&dummy,sizeof(int),1,inp);
+    fclose(inp);
+    roion[jk]/=robar*(N1*N2*N3); // mass avg xHI
+    vion[jk]/=(1.*N1*N2*N3); // volume avg xHI
+    // roion[jk]/=(float)robar; // divide by H density to get mass avg. xHI
+    t_stop = Get_Current_time();
+    printf("nion = %f obtained vol. avg. x_HI=%e mass avg. x_HI=%e : %lf s\n",nion[jk],vion[jk],roion[jk],t_stop-t_start);
+    fprintf(sinp,"%e\t%e\n",vion[jk],roion[jk]);
+    fclose(sinp);
+  }
+
 }
 
 /** 
