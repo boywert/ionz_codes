@@ -60,7 +60,7 @@ def main():
     summaryfile = "/scratch/01937/cs390/data/CSFR/no_reionization/wmap7/SEMNUM/sumfile.sum"
     pbsfile = "/scratch/01937/cs390/data/CSFR/no_reionization/wmap7/SEMNUM/lonestar.pbs"
     os.system("mkdir -p "+outputdir)
-    create_pbs(srcdir,outputdir,summaryfile,pbsfile,logfile)
+    create_pbs(srcdir,outputdir,summaryfile,pbsfile)
     #submit_pbs(pbsfile)
     
     srcdir="/scratch/01937/cs390/data/CSFR/okamoto/wmap7/"
@@ -68,7 +68,7 @@ def main():
     summaryfile = "/scratch/01937/cs390/data/CSFR/okamoto/wmap7/SEMNUM/sumfile.sum"
     pbsfile = "/scratch/01937/cs390/data/CSFR/okamoto/wmap7/SEMNUM/lonestar.pbs"
     os.system("mkdir -p "+outputdir)
-    create_pbs(srcdir,outputdir,summaryfile,pbsfile,logfile)
+    create_pbs(srcdir,outputdir,summaryfile,pbsfile)
     #submit_pbs(pbsfile)
 
 if __name__=="__main__":
