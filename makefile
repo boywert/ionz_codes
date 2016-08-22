@@ -5,7 +5,7 @@ INCLUDE= -I${TACC_FFTW2_INC}
 CFLAGS=-g -Wall -std=c99
 CC=mpicc
 CFLAGS+= -DPARALLEL -DCHUNKTRANSFER -DUSE_FORTRAN_SPEEDUP_ARRAY
-POSTFLAGS= -lm ${TACC_FFTW2_LIB}/libsrfftw.a ${TACC_FFTW2_LIB}/libsfftw.a
+POSTFLAGS= -mkl -lm ${TACC_FFTW2_LIB}/libsrfftw.a ${TACC_FFTW2_LIB}/libsfftw.a
 
 FC=mpif90
 
