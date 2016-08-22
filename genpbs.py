@@ -1,8 +1,8 @@
 import numpy
 import os
 #parameters
-execfile = "./ionz_main"
-nion_list = "nion.list"
+execfile = "/scratch/01937/cs390/cal_ionz/ionz_main"
+nion_list = "/scratch/01937/cs390/cal_ionz/nion.list"
 omegam = 0.27
 omegab = 0.044
 omegal = 0.73
