@@ -51,7 +51,7 @@ def create_pbs(srcdir,outputdir,summaryfile,pbsfile):
             denfile = densdir+"/"+z3+"n_all.dat"
             srcfile = srcdir+"/"+z2+".dat"
             print >> f, "echo 'z = "+z3+"'"
-            print >> f, 'ibrun tacc_affinity',execfile,option,nion_list,omegam,omegab,omegal,hubble_h,ngrid,boxsize,denfile,srcfile,z3,prev_z,outputdir,summaryfile,mass_unit
+            print >> f, 'ibrun -np 144 tacc_affinity',execfile,option,nion_list,omegam,omegab,omegal,hubble_h,ngrid,boxsize,denfile,srcfile,z3,prev_z,outputdir,summaryfile,mass_unit
     f.close
 
 def main():
