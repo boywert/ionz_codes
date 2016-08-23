@@ -145,11 +145,7 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
   int dummy;
   
   for(jk=0;jk<Nnion;jk++) {
-    sprintf(th_filename,"%s_%4.2f",input_param.summary_file,nion[jk]);
-    sinp = fopen(th_filename,"a");
-    fprintf(sinp,"%s\t",z_out);
     t_start = Get_Current_time();
-    
     vion[jk]=0.0;
     roion[jk]=0.0;
       // Defining the ionization map output file name
@@ -171,7 +167,9 @@ void write_xfrac(char *dirname, char *z_out, float *buffer_4d, fftw_real ***nh, 
       jj = ((ll-start_ll)/N1) % N2;
       kk = ((ll-start_ll)/(N1*N2)) % N3;
     }
-    
+    sprintf(th_filename,"%s_%4.2f",input_param.summary_file,nion[jk]);
+    sinp = fopen(th_filename,"a");
+    fprintf(sinp,"%s\t",z_out);
     inp=fopen(filename,"wb+");
     // Writing the x_HI map in binary
     // In the begining 3 integers are written which defines the size
